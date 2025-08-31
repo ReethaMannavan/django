@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>{{ object.title }}</h1>
+  <img src="{{ object.image.url }}" alt="{{ object.title }}">
+  <p>{{ object.description }}</p>
+  {% if object.link %}
+    <a href="{{ object.link }}" target="_blank">Visit Project</a>
+  {% endif %}
+{% endblock %}

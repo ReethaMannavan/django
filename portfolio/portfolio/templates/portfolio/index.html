@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1 class="page-title">My Portfolio</h1>
+
+<div class="projects">
+  {% for project in projects %}
+    <div class="project-card">
+      {% if project.image %}
+      <div class="project-image-wrapper">
+        <img src="{{ project.image.url }}" alt="{{ project.title }}">
+        <div class="overlay">
+          <h2>{{ project.title }}</h2>
+          {% if project.link %}
+          <a href="{{ project.link }}" target="_blank">Visit Project</a>
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+      <p>{{ project.description|truncatechars:150 }}</p>
+    </div>
+  {% endfor %}
+</div>
+
+
+<!-- Skills Section -->
+<h2 class="section-title">My Skills</h2>
+<ul class="skills">
+  {% for skill in skills %}
+    <li>
+      <span>{{ skill.name }} <strong class="skill-percent">{{ skill.proficiency }}%</strong></span>
+      <div class="progress">
+        <div class="progress-bar" data-width="{{ skill.proficiency }}"></div>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+
+<!-- JS to set progress bar widths -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.progress-bar').forEach(function(bar) {
+      bar.style.width = bar.dataset.width + '%';
+    });
+  });
+</script>
+
+{% endblock %}
