@@ -1,0 +1,193 @@
+/* --- Global --- */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f8;
+    margin: 0;
+    padding: 0 20px;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: #097AFA;
+}
+
+a:hover {
+    color: #0056b3;
+}
+
+/* --- Navigation --- */
+nav {
+    background-color: #097AFA;
+    padding: 10px 20px;
+    margin-bottom: 30px;
+    border-radius: 5px;
+}
+
+nav a, nav form button {
+    color: #fff;
+    margin-right: 15px;
+    padding: 6px 12px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+nav a:hover, nav form button:hover {
+    background-color: #7AABF5;
+}
+
+/* --- Forms --- */
+form {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.1);
+    margin-bottom: 30px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="password"],
+form input[type="email"],
+form input[type="date"],
+form textarea,
+form select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+form button {
+    background-color: #097AFA;
+    color: white;
+    padding: 8px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #7AABF5;
+}
+
+/* --- Headings --- */
+h1, h2 {
+    color: #097AFA;
+    margin-bottom: 15px;
+}
+
+h1.page-title {
+    margin-top: 0;
+}
+
+/* --- Messages --- */
+.messages {
+    margin-bottom: 20px;
+}
+
+.messages p {
+    background-color: #d3f8d3;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 5px 0;
+}
+
+.messages p.error {
+    background-color: #f8d3d3;
+}
+
+/* --- Posts List --- */
+.post-card {
+    background: #fff;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.05);
+}
+
+.post-card img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.post-card h3 {
+    margin-top: 0;
+}
+
+.post-card .post-meta {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+/* --- Comments --- */
+.comment {
+    background: #f1f3f5;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.comment p {
+    margin: 0;
+}
+
+.comment small {
+    font-size: 0.8em;
+    color: #666;
+}
+
+/* --- Pagination --- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination span,
+.pagination a {
+    display: inline-block;
+    padding: 6px 12px;
+    margin: 0 2px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: #097AFA;
+}
+
+.pagination .current {
+    background-color: #097AFA;
+    color: #fff;
+    border: 1px solid #097AFA;
+}
+
+.pagination a:hover {
+    background-color: #7AABF5;
+    color: white;
+    border-color: #7AABF5;
+}
+
+/* --- Images in posts --- */
+.post-image {
+    max-width: 100%;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+
+/* --- Misc --- */
+button.delete-btn {
+    background-color: #f44336;
+}
+
+button.delete-btn:hover {
+    background-color: #e57373;
+}
