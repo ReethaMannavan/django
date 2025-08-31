@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Task Manager</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<nav>
+  <a href="{% url 'task_app:task_list' %}">Home</a>
+  {% if user.is_authenticated %}
+      <a href="{% url 'task_app:task_create' %}">Add Task</a>
+
+      <!-- Logout as POST form -->
+      <form method="post" action="{% url 'logout' %}" style="display:inline;">
+          {% csrf_token %}
+          <button type="submit" class="logout-btn">Logout</button>
+      </form>
+
+  {% else %}
+      <a href="{% url 'login' %}">Login</a>
+      <a href="{% url 'register' %}">Register</a>
+  {% endif %}
+</nav>
+
+{% if messages %}
+<div class="messages">
+  {% for message in messages %}
+    <p class="{{ message.tags }}">{{ message }}</p>
+  {% endfor %}
+</div>
+{% endif %}
+
+{% block content %}{% endblock %}
+</body>
+</html>
