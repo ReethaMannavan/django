@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>All Recipes</h2>
+<form method="GET">
+    <input type="text" name="query" placeholder="Search recipes" value="{{ request.GET.query }}">
+    <button type="submit">Search</button>
+</form>
+
+<div class="recipe-grid">
+    {% for recipe in recipes %}
+    <div class="recipe-card">
+        {% if recipe.image %}
+        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+        {% endif %}
+        <h3>{{ recipe.title }}</h3>
+        <p>By {{ recipe.author.username }}</p>
+        <a href="{% url 'recipes:recipe_detail' recipe.pk %}">View Recipe</a>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<div class="pagination">
+    {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+    {% endif %}
+    <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+    {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}
