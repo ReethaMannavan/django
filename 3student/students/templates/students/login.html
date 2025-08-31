@@ -1,0 +1,18 @@
+{% extends "students/base.html" %}
+
+{% block content %}
+<div class="form-container">
+  <h2>Login</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Login</button>
+  </form>
+
+  {% if form.errors %}
+    <div class="error-message">
+      <p>Invalid username or password.</p>
+    </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "students/base.html" %}
+
+{% block content %}
+<div class="detail-card">
+    <h2>{{ student.name }}</h2>
+    <p><strong>Age:</strong> {{ student.age }}</p>
+    <p><strong>Email:</strong> {{ student.email }}</p>
+
+    <h3>Enrolled Courses</h3>
+    {% if student.enrollments.all %}
+        <ul class="students-list">
+            {% for enrollment in student.enrollments.all %}
+                <li>{{ enrollment.course.title }} (Enrolled on {{ enrollment.date }})</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No courses enrolled.</p>
+    {% endif %}
+</div>
+{% endblock %}

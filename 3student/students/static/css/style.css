@@ -1,0 +1,245 @@
+/* ---------------- General Reset ---------------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* ---------------- Navbar ---------------- */
+nav {
+    background-color: #097AFA;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 0 10px 10px;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+    margin-right: 1.5rem;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #D3DFF8;
+}
+
+nav .username {
+    color: white;
+    font-weight: 500;
+}
+
+/* ---------------- Headings ---------------- */
+h1, h2, h3 {
+    margin-bottom: 1rem;
+    color: #097AFA;
+}
+
+/* ---------------- Buttons ---------------- */
+button, input[type="submit"] {
+    background-color: #097AFA;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+button:hover, input[type="submit"]:hover {
+    background-color: #7AABF5;
+}
+
+/* ---------------- Forms ---------------- */
+form {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    margin: 1rem 0;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="password"],
+form select,
+form textarea {
+    flex: 1;
+    padding: 0.5rem;
+    margin-right: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    padding: 0.5rem 1rem;
+}
+
+/* ---------------- Messages ---------------- */
+.messages {
+    margin: 1rem 0;
+}
+
+.messages p {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+
+.messages .error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.messages .success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+/* ---------------- Student List / Cards ---------------- */
+ul.students-list {
+    list-style: none;
+    padding-left: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+ul.students-list li {
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+ul.students-list li:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+ul.students-list li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+ul.students-list li a:hover {
+    color: #097AFA;
+}
+
+/* ---------------- Detail Pages ---------------- */
+.detail-card {
+    background: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.detail-card h3 {
+    margin-bottom: 1rem;
+}
+
+/* ---------------- Tables ---------------- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+table th, table td {
+    padding: 0.75rem 1rem;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+
+table th {
+    background-color: #097AFA;
+    color: white;
+}
+
+/* ---------------- Footer ---------------- */
+footer {
+    text-align: center;
+    padding: 1rem;
+    margin-top: 2rem;
+    color: #777;
+}
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav a {
+        margin-bottom: 0.5rem;
+    }
+
+    form {
+        flex-direction: column;
+    }
+
+    form input[type="text"],
+    form input[type="email"],
+    form input[type="number"],
+    form input[type="password"],
+    form select,
+    form textarea,
+    form button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Centered search form with max width */
+form.search-form {
+    display: flex;
+    width: 100%;
+    max-width: 600px; /* max width for large screens */
+    margin: 1rem auto; /* centers the form */
+    background: white;
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+}
+
+form.search-form input[type="text"] {
+    flex: 1;
+    padding: 0.5rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-right: 0.5rem;
+}
+
+form.search-form button {
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background-color: #097AFA;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+form.search-form button:hover {
+    background-color: #7AABF5;
+}
+.student{
+text-align: center;
+margin-top: 10px;
+}

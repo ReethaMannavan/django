@@ -1,0 +1,22 @@
+{% extends "students/base.html" %}
+
+{% block content %}
+<h2 class="student">Students</h2>
+
+<form method="get" class="search-form">
+    {{ search_form.query }}
+    <button type="submit">Search</button>
+</form>
+
+<ul class="students-list">
+    {% for student in students %}
+        <li>
+            <a href="{% url 'students:student_detail' student.pk %}">
+                {{ student.name }} ({{ student.email }})
+            </a>
+        </li>
+    {% empty %}
+        <li>No students found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
