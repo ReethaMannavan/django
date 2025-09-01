@@ -1,0 +1,337 @@
+[
+  {
+    "model": "blog.category",
+    "pk": 1,
+    "fields": { "name": "Django" }
+  },
+  {
+    "model": "blog.category",
+    "pk": 2,
+    "fields": { "name": "Python" }
+  },
+  {
+    "model": "blog.category",
+    "pk": 3,
+    "fields": { "name": "Web Development" }
+  },
+  {
+    "model": "blog.category",
+    "pk": 4,
+    "fields": { "name": "API" }
+  },
+  {
+    "model": "blog.category",
+    "pk": 5,
+    "fields": { "name": "Tips & Tricks" }
+  },
+
+
+  {
+    "model": "blog.post",
+    "pk": 1,
+    "fields": {
+      "title": "Getting Started with Django",
+      "content": "Learn the basics of Django, including project structure, apps, models, and views.",
+      "category": 1,
+      "published_date": "2025-08-01T09:00:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 2,
+    "fields": {
+      "title": "Django Models Explained",
+      "content": "Understand Django models, fields, relationships, and migrations step by step.",
+      "category": 1,
+      "published_date": "2025-08-03T11:30:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 3,
+    "fields": {
+      "title": "Django Template Best Practices",
+      "content": "Learn how to structure templates, reuse components, and keep your HTML clean.",
+      "category": 1,
+      "published_date": "2025-08-05T15:00:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 4,
+    "fields": {
+      "title": "Django ORM Tricks",
+      "content": "Boost performance with powerful ORM queries, Q objects, annotations, and aggregations.",
+      "category": 1,
+      "published_date": "2025-08-07T12:00:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 5,
+    "fields": {
+      "title": "Advanced Django Pagination",
+      "content": "Learn advanced pagination techniques using Django's Paginator and custom template tags.",
+      "category": 1,
+      "published_date": "2025-08-09T10:00:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 6,
+    "fields": {
+      "title": "Django Signals Explained",
+      "content": "Use signals to perform tasks automatically when certain events occur in your app.",
+      "category": 1,
+      "published_date": "2025-08-11T18:00:00Z"
+    }
+  },
+
+
+  {
+    "model": "blog.post",
+    "pk": 7,
+    "fields": {
+      "title": "Python Basics for Beginners",
+      "content": "Learn Python fundamentals like variables, loops, functions, and data types.",
+      "category": 2,
+      "published_date": "2025-08-02T10:15:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 8,
+    "fields": {
+      "title": "Object-Oriented Programming in Python",
+      "content": "Understand classes, objects, inheritance, and encapsulation in Python.",
+      "category": 2,
+      "published_date": "2025-08-04T14:45:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 9,
+    "fields": {
+      "title": "Working with Python Modules",
+      "content": "Learn how to create, import, and manage Python modules and packages.",
+      "category": 2,
+      "published_date": "2025-08-06T09:20:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 10,
+    "fields": {
+      "title": "File Handling in Python",
+      "content": "A guide to reading, writing, and managing files efficiently in Python.",
+      "category": 2,
+      "published_date": "2025-08-08T16:40:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 11,
+    "fields": {
+      "title": "Python Virtual Environments",
+      "content": "Understand venv, pipenv, and poetry for managing project dependencies.",
+      "category": 2,
+      "published_date": "2025-08-10T19:10:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 12,
+    "fields": {
+      "title": "Python Debugging Tips",
+      "content": "Learn how to debug Python applications efficiently using pdb and logging.",
+      "category": 2,
+      "published_date": "2025-08-12T08:30:00Z"
+    }
+  },
+
+ 
+  {
+    "model": "blog.post",
+    "pk": 13,
+    "fields": {
+      "title": "Top 10 Web Development Trends 2025",
+      "content": "Discover the latest trends shaping the web, from AI-driven UI to serverless apps.",
+      "category": 3,
+      "published_date": "2025-08-01T13:00:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 14,
+    "fields": {
+      "title": "Responsive Web Design Basics",
+      "content": "Learn how to make websites mobile-friendly using CSS Flexbox and Grid.",
+      "category": 3,
+      "published_date": "2025-08-03T17:20:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 15,
+    "fields": {
+      "title": "SEO Optimization for Developers",
+      "content": "Best practices for improving SEO performance while building web apps.",
+      "category": 3,
+      "published_date": "2025-08-05T11:40:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 16,
+    "fields": {
+      "title": "Using Bootstrap 5 Effectively",
+      "content": "Learn to create responsive designs quickly using Bootstrap's components.",
+      "category": 3,
+      "published_date": "2025-08-07T09:15:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 17,
+    "fields": {
+      "title": "Tailwind CSS Crash Course",
+      "content": "Master Tailwind's utility classes and build beautiful UIs faster.",
+      "category": 3,
+      "published_date": "2025-08-09T15:25:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 18,
+    "fields": {
+      "title": "Frontend vs Backend Development",
+      "content": "Understand the difference between client-side and server-side coding.",
+      "category": 3,
+      "published_date": "2025-08-11T18:50:00Z"
+    }
+  },
+
+  
+  {
+    "model": "blog.post",
+    "pk": 19,
+    "fields": {
+      "title": "REST API Basics",
+      "content": "Learn the principles of REST APIs and how to structure endpoints properly.",
+      "category": 4,
+      "published_date": "2025-08-02T12:30:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 20,
+    "fields": {
+      "title": "Django REST Framework Guide",
+      "content": "A beginner-friendly guide to using DRF for creating REST APIs.",
+      "category": 4,
+      "published_date": "2025-08-04T08:10:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 21,
+    "fields": {
+      "title": "API Authentication Methods",
+      "content": "Explore token-based, JWT, and OAuth2 authentication in REST APIs.",
+      "category": 4,
+      "published_date": "2025-08-06T14:30:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 22,
+    "fields": {
+      "title": "Rate Limiting in APIs",
+      "content": "Learn how to prevent abuse of your API endpoints using throttling techniques.",
+      "category": 4,
+      "published_date": "2025-08-08T16:55:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 23,
+    "fields": {
+      "title": "GraphQL vs REST",
+      "content": "Compare GraphQL and REST to choose the right API style for your project.",
+      "category": 4,
+      "published_date": "2025-08-10T13:45:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 24,
+    "fields": {
+      "title": "API Testing Strategies",
+      "content": "Understand Postman, pytest, and automated testing for APIs.",
+      "category": 4,
+      "published_date": "2025-08-12T09:00:00Z"
+    }
+  },
+
+
+  {
+    "model": "blog.post",
+    "pk": 25,
+    "fields": {
+      "title": "10 Python Tips You Must Know",
+      "content": "Boost your Python coding skills with these 10 practical tips and tricks.",
+      "category": 5,
+      "published_date": "2025-08-01T10:10:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 26,
+    "fields": {
+      "title": "Speed Up Django Development",
+      "content": "Discover techniques to build Django projects faster and cleaner.",
+      "category": 5,
+      "published_date": "2025-08-03T18:35:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 27,
+    "fields": {
+      "title": "Best VS Code Extensions",
+      "content": "Improve productivity with the best VS Code extensions for Django and Python.",
+      "category": 5,
+      "published_date": "2025-08-05T09:20:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 28,
+    "fields": {
+      "title": "Debugging Django Apps",
+      "content": "Learn advanced debugging techniques for Django using pdb and logging.",
+      "category": 5,
+      "published_date": "2025-08-07T12:15:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 29,
+    "fields": {
+      "title": "Optimize Database Queries",
+      "content": "Reduce query count and improve performance using select_related and prefetch_related.",
+      "category": 5,
+      "published_date": "2025-08-09T14:50:00Z"
+    }
+  },
+  {
+    "model": "blog.post",
+    "pk": 30,
+    "fields": {
+      "title": "Deploying Django to Heroku",
+      "content": "Step-by-step guide to deploy Django apps on Heroku successfully.",
+      "category": 5,
+      "published_date": "2025-08-11T16:30:00Z"
+    }
+  }
+]

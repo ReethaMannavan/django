@@ -1,0 +1,131 @@
+/* Global */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f2f2f8;
+  margin: 0;
+  padding: 0;
+  color: #333;
+}
+
+/* Navbar */
+.navbar {
+  background: linear-gradient(90deg, #B285C0, #9C63C1);
+  padding: 20px 30px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.logo {
+  margin: 0;
+  color: #fff;
+  font-weight: 700;
+  font-size: 28px;
+  letter-spacing: 1px;
+}
+
+/* Main Content */
+main {
+  max-width: 900px;
+  margin: 30px auto;
+  padding: 0 20px;
+}
+
+/* Cards */
+.card {
+  background: #fff;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 15px;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+}
+
+.card h2 {
+  margin-top: 0;
+  color: #6f2fa3;
+}
+
+/* Meta info */
+.meta {
+  color: #777;
+  font-size: 0.85rem;
+  margin-bottom: 10px;
+}
+
+/* Search & Filter */
+.search-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 25px;
+}
+
+.search-filter input,
+.search-filter select {
+  flex: 1;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-filter input:focus,
+.search-filter select:focus {
+  border-color: #B285C0;
+  box-shadow: 0 0 5px rgba(178, 133, 192, 0.5);
+}
+
+.search-filter button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  background: #B285C0;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.search-filter button:hover {
+  background: #9C63C1;
+  transform: translateY(-2px);
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin: 25px 0;
+}
+
+.pagination a {
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: 1px solid #B285C0;
+  color: #B285C0;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.pagination a:hover {
+  background: #B285C0;
+  color: white;
+  transform: translateY(-2px);
+}
+
+.pagination span {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #eee;
+  color: #555;
+}
+.miniblog{
+  color:#6f2fa3;
+  text-align: center;
+}
