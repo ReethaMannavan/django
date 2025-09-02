@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>My Notes</h2>
+{% if notes %}
+    <ul>
+        {% for note in notes %}
+            <li>
+                <a href="{% url 'note-detail' note.pk %}">{{ note.title }}</a>
+                {% if user.is_superuser %}
+                    (Owner: {{ note.owner.username }})
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No notes found.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,92 @@
+[
+  {
+    "model": "notes.note",
+    "pk": 1,
+    "fields": {
+      "title": "Alice's First Note",
+      "content": "This is a sample note for Alice.",
+      "owner": 1
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 2,
+    "fields": {
+      "title": "Alice's Second Note",
+      "content": "Another note belonging to Alice.",
+      "owner": 1
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 3,
+    "fields": {
+      "title": "Bob's Note",
+      "content": "Sample note for Bob.",
+      "owner": 2
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 4,
+    "fields": {
+      "title": "Carol's Note",
+      "content": "Sample note for Carol.",
+      "owner": 3
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 5,
+    "fields": {
+      "title": "Dave's Note",
+      "content": "Sample note for Dave.",
+      "owner": 4
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 6,
+    "fields": {
+      "title": "Eve's Note",
+      "content": "Admin Eve can see all notes.",
+      "owner": 5
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 7,
+    "fields": {
+      "title": "Bob's Second Note",
+      "content": "Another note belonging to Bob.",
+      "owner": 2
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 8,
+    "fields": {
+      "title": "Carol's Second Note",
+      "content": "Another note for Carol.",
+      "owner": 3
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 9,
+    "fields": {
+      "title": "Dave's Second Note",
+      "content": "Second note for Dave.",
+      "owner": 4
+    }
+  },
+  {
+    "model": "notes.note",
+    "pk": 10,
+    "fields": {
+      "title": "Alice's Third Note",
+      "content": "Third note for Alice.",
+      "owner": 1
+    }
+  }
+]
