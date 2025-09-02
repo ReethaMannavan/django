@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Employee Leave Management</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<header>
+    <div class="header-container">
+        <h1 class="hone">Employee Leave App</h1>
+        <nav>
+            {% if user.is_authenticated %}
+                <span>Hello, {{ user.username }}</span>
+                <a href="{% url 'leave-list' %}">Home</a>
+                <a href="{% url 'leave-create' %}">Add Leave</a>
+                 <form method="post" action="{% url 'logout' %}" style="display:inline;">
+    {% csrf_token %}
+    <button type="submit">Logout</button>
+</form>
+            {% else %}
+                <a href="{% url 'login' %}">Login</a>
+            {% endif %}
+        </nav>
+    </div>
+</header>
+
+<main>
+    {% block content %}{% endblock %}
+</main>
+</body>
+</html>
+
+   

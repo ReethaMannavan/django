@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Leave Requests</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Employee</th>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for leave in leaves %}
+        <tr>
+            <td>{{ leave.employee.username }}</td>
+            <td>{{ leave.reason }}</td>
+            <td>
+                {% if leave.status == 'APPROVED' %}
+                    <span class="badge green">Approved</span>
+                {% elif leave.status == 'REJECTED' %}
+                    <span class="badge red">Rejected</span>
+                {% else %}
+                    <span class="badge yellow">Pending</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if user == leave.employee %}
+                    <a href="{% url 'leave-update' leave.id %}">Edit</a> |
+                    <a href="{% url 'leave-delete' leave.id %}">Delete</a>
+                {% endif %}
+
+                {% if user.is_staff or user.is_superuser %}
+                    {% if leave.status == 'PENDING' %}
+                        | <a href="{% url 'leave-approve' leave.id %}">Approve</a>
+                        | <a href="{% url 'leave-reject' leave.id %}">Reject</a>
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,32 @@
+[
+  {
+    "model": "leave.leaverequest",
+    "pk": 1,
+    "fields": {
+      "employee": 1,
+      "reason": "Medical leave due to fever",
+      "status": "PENDING",
+      "created_at": "2025-09-01T09:00:00Z"
+    }
+  },
+  {
+    "model": "leave.leaverequest",
+    "pk": 2,
+    "fields": {
+      "employee": 2,
+      "reason": "Family emergency leave",
+      "status": "APPROVED",
+      "created_at": "2025-09-02T10:30:00Z"
+    }
+  },
+  {
+    "model": "leave.leaverequest",
+    "pk": 3,
+    "fields": {
+      "employee": 3,
+      "reason": "Vacation for 3 days",
+      "status": "REJECTED",
+      "created_at": "2025-09-03T11:15:00Z"
+    }
+  }
+]
