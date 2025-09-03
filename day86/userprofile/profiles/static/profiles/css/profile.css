@@ -1,0 +1,77 @@
+/* Global Styles */
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+/* Center forms on login & register pages */
+.container {
+  max-width: 600px;
+}
+
+/* Profile Section */
+.img-thumbnail {
+  border-radius: 50%;
+  object-fit: cover;
+  height: 150px;
+  width: 150px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.card {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+  text-align: center;
+}
+
+h2, h4 {
+  color: #6c2eb9; /* Purple theme */
+  font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary, .btn-success {
+  background-color: #6c2eb9; /* Purple */
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-weight: 600;
+}
+
+.btn-primary:hover, .btn-success:hover {
+  background-color: #5a2499;
+}
+
+/* Forms */
+form input, form textarea, form select {
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  width: 100%;
+}
+
+form label {
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+/* Login/Register Page */
+.login-box, .register-box {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-top: 50px;
+}
+
+.login-box h2, .register-box h2 {
+  margin-bottom: 20px;
+  text-align: center;
+  color: #6c2eb9;
+}
