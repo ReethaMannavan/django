@@ -1,0 +1,106 @@
+/* Global body */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contact/registration/login container */
+.contact-container,
+.card {
+    max-width: 500px;
+    margin: 80px auto;
+    background-color: #fff;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings */
+.contact-container h2,
+.card h3 {
+    text-align: center;
+    color: #333;
+    margin-bottom: 25px;
+    font-weight: 600;
+}
+
+/* Form inputs, textarea and buttons */
+.contact-container form input,
+.contact-container form textarea,
+.contact-container form button,
+.form-control {
+    width: 100%;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}
+
+/* Input & textarea focus */
+.contact-container form input:focus,
+.contact-container form textarea:focus,
+.form-control:focus {
+    border-color: #b285c0;
+    outline: none;
+    box-shadow: 0 0 5px rgba(178, 133, 192, 0.5);
+}
+
+/* Buttons */
+.contact-container form button,
+.btn-primary,
+.btn-success {
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+/* Button colors */
+.contact-container form button,
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.contact-container form button:hover,
+.btn-success:hover {
+    background-color: #218838;
+}
+
+.btn-primary {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.btn-primary:hover {
+    background-color: #5c36a8;
+}
+
+/* Links in forms */
+.contact-container .text-center a {
+    color: #b285c0;
+    text-decoration: none;
+}
+
+.contact-container .text-center a:hover {
+    text-decoration: underline;
+}
+
+/* Error messages */
+.errorlist,
+.text-danger {
+    color: #ff4d4d !important;
+    margin: 5px 0 10px 0;
+    padding-left: 0;
+    list-style: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.errorlist li {
+    margin-left: 0;
+}
