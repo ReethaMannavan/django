@@ -1,0 +1,40 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    padding: 20px;
+    margin-top: 50px;
+}
+
+.errorlist {
+    color: #ff4d4d;
+    margin: 5px 0 10px 0;
+    padding-left: 0;
+    list-style: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.errorlist li {
+    margin-left: 0;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.btn-primary {
+    background-color: #6f42c1;
+    border-color: #6f42c1;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}

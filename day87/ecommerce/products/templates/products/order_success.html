@@ -1,0 +1,14 @@
+{% extends 'products/base.html' %}
+{% block title %}Order Success{% endblock %}
+
+{% block content %}
+<div class="card mx-auto text-center" style="max-width: 500px; margin-top: 80px;">
+    <div class="card-body">
+        <h2 class="mb-3">Order Confirmed!</h2>
+        <p class="mb-2">Order ID: {{ order.id }}</p>
+        <p class="mb-2">Total Amount: ₹{{ order.total_amount }}</p>
+        <p class="mb-3">A confirmation email has been sent to your registered email.</p>
+        <a href="{% url 'home' %}" class="btn btn-primary w-100">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'products/base.html' %}
+{% block title %}Query Sent{% endblock %}
+{% block content %}
+<div class="card mx-auto text-center" style="max-width: 500px;">
+    <div class="card-body">
+        <h2 class="text-success mb-3">Query Sent!</h2>
+        <p>Thank you for contacting us. We will respond shortly.</p>
+        <a href="{% url 'customer_query' %}" class="btn btn-primary mt-3">Send Another Query</a>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,21 @@
+{% extends 'products/base.html' %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="card mx-auto text-center" style="max-width: 500px; margin-top: 80px;">
+    <div class="card-body">
+        {% if user.is_authenticated %}
+            <h2 class="mb-3">Welcome, {{ user.username }}!</h2>
+            <p class="mb-4">Use the buttons below to place an order or send a query.</p>
+
+            <a href="{% url 'place_order' %}" class="btn btn-success btn-lg mb-2 w-100">Place Order</a>
+            <a href="{% url 'customer_query' %}" class="btn btn-primary btn-lg w-100">Send Query</a>
+        {% else %}
+            <h2 class="mb-3">Welcome to Our E-Commerce Platform!</h2>
+            <p class="mb-4">Please login or register to place orders and send queries.</p>
+            <a href="{% url 'login' %}" class="btn btn-primary btn-lg mb-2 w-100">Login</a>
+            <a href="{% url 'register' %}" class="btn btn-success btn-lg w-100">Register</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
