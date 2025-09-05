@@ -1,0 +1,77 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 101,
+    "fields": {
+      "username": "student101",
+      "password": "pbkdf2_sha256$260000$xxxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxxxxxx", 
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "email": "student101@example.com"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 102,
+    "fields": {
+      "username": "student102",
+      "password": "pbkdf2_sha256$260000$xxxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "is_superuser": false,
+      "is_staff": false,
+      "is_active": true,
+      "email": "student102@example.com"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 201,
+    "fields": {
+      "username": "staff201",
+      "password": "pbkdf2_sha256$260000$xxxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "email": "staff201@example.com"
+    }
+  },
+  {
+    "model": "auth.user",
+    "pk": 202,
+    "fields": {
+      "username": "staff202",
+      "password": "pbkdf2_sha256$260000$xxxxxxxx$xxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "is_superuser": true,
+      "is_staff": true,
+      "is_active": true,
+      "email": "staff202@example.com"
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 1,
+    "fields": {
+      "title": "Python for Beginners",
+      "instructor": 201,
+      "description": "Learn Python programming from scratch."
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 2,
+    "fields": {
+      "title": "Django Web Development",
+      "instructor": 202,
+      "description": "Build web applications using Django framework."
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 3,
+    "fields": {
+      "title": "Data Science with Python",
+      "instructor": 201,
+      "description": "Analyze data and build models using Python."
+    }
+  }
+]

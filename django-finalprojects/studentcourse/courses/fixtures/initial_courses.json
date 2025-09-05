@@ -1,0 +1,38 @@
+[
+  {
+    "model": "courses.course",
+    "pk": 1,
+    "fields": {
+      "title": "Python Programming",
+      "instructor": 1,
+      "description": "Learn Python from basics to advanced concepts. Hands-on examples included."
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 2,
+    "fields": {
+      "title": "Django Web Development",
+      "instructor": 2,
+      "description": "Build full-featured web applications using Django. Covers models, views, templates, and more."
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 3,
+    "fields": {
+      "title": "Data Structures & Algorithms",
+      "instructor": 1,
+      "description": "Understand core data structures and algorithms. Solve real-world problems efficiently."
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 4,
+    "fields": {
+      "title": "Machine Learning Basics",
+      "instructor": 2,
+      "description": "Introduction to machine learning concepts, supervised & unsupervised learning, and practical exercises."
+    }
+  }
+]
