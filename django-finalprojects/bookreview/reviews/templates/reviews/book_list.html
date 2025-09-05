@@ -1,0 +1,49 @@
+{% extends 'reviews/base.html' %}
+{% block title %}Books{% endblock %}
+{% block content %}
+<div class="row mb-3">
+  <div class="col-md-8">
+    <form method="get" class="d-flex gap-2">
+      {{ search_form.q }}
+      <button class="btn btn-primary">Search</button>
+    </form>
+  </div>
+  <div class="col-md-4">
+    <form method="get" class="d-flex gap-2">
+      <select name="category" class="form-select">
+        <option value="">All categories</option>
+        {% for c in categories %}
+          <option value="{{ c.id }}" {% if active_category == c.id|stringformat:'s' %}selected{% endif %}>
+    {{ c.name }}
+</option>
+
+        {% endfor %}
+      </select>
+      <button class="btn btn-outline-secondary">Filter</button>
+    </form>
+  </div>
+</div>
+
+<div class="row">
+  {% for book in books %}
+    <div class="col-md-3 mb-4">
+      <div class="card h-100">
+        {% if book.cover_image %}
+          <img src="{{ book.cover_image.url }}" class="card-img-top h-50" alt="{{ book.title }}">
+        {% endif %}
+        <div class="card-body">
+          <h5 class="card-title">{{ book.title }}</h5>
+          <p class="card-text text-muted">{{ book.author }}</p>
+          <p class="small mb-1">Avg: {{ book.avg_rating|default:"–" }}</p>
+          <p class="small">Reviews: {{ book.review_count }}</p>
+          <a class="btn btn-sm btn-primary" href="{% url 'book_detail' book.pk %}">Details</a>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p>No books found.</p>
+  {% endfor %}
+</div>
+
+{% include 'reviews/includes/_pagination.html' %}
+{% endblock %}

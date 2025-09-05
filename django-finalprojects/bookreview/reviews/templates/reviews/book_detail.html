@@ -1,0 +1,52 @@
+{% extends 'reviews/base.html' %}
+{% block title %}{{ book.title }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-4">
+    {% if book.cover_image %}
+      <img src="{{ book.cover_image.url }}" class="img-fluid rounded mb-3" alt="{{ book.title }}">
+    {% else %}
+      <div class="p-5 bg-light text-center rounded mb-3">No cover</div>
+    {% endif %}
+    <p><strong>Author:</strong> {{ book.author }}</p>
+    <p>
+      <strong>Categories:</strong>
+      {% for c in book.categories.all %}<span class="badge bg-secondary me-1">{{ c.name }}</span>{% empty %}—{% endfor %}
+    </p>
+  </div>
+  <div class="col-md-8">
+    <h2 class="mb-2">{{ book.title }}</h2>
+    <p class="text-muted">{{ book.description|linebreaks }}</p>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h4>Reviews</h4>
+      {% if user.is_authenticated %}
+        <a href="{% url 'review_add' book.pk %}" class="btn btn-sm btn-success">Write a review</a>
+      {% else %}
+        <a href="{% url 'login' %}" class="btn btn-sm btn-outline-primary">Login to review</a>
+      {% endif %}
+    </div>
+
+    {% for r in reviews %}
+      <div class="border rounded p-3 mb-2">
+        <div class="d-flex justify-content-between">
+          <div><strong>{{ r.user.username }}</strong> — <span>{{ r.rating }}/5</span></div>
+          <div class="small text-muted">{{ r.created_at|date:"Y-m-d H:i" }}</div>
+        </div>
+        <p class="mb-2">{{ r.comment|linebreaks }}</p>
+        <div>
+          <a href="{% url 'review_detail' r.pk %}" class="btn btn-sm btn-outline-secondary">View</a>
+          {% if user.is_authenticated and r.user_id == user.id %}
+            <a href="{% url 'review_edit' r.pk %}" class="btn btn-sm btn-outline-primary">Edit</a>
+            <a href="{% url 'review_delete' r.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+          {% elif user.is_staff %}
+            <a href="{% url 'review_delete' r.pk %}" class="btn btn-sm btn-danger">Delete (admin)</a>
+          {% endif %}
+        </div>
+      </div>
+    {% empty %}
+      <p>No reviews yet.</p>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'reviews/base.html' %}
+{% block title %}Review{% endblock %}
+{% block content %}
+<div class="card mx-auto" style="max-width: 700px;">
+  <div class="card-body">
+    <h5 class="card-title">{{ review.book.title }} — {{ review.user.username }}</h5>
+    <p class="text-muted">Rating: {{ review.rating }}/5 · {{ review.created_at|date:"Y-m-d H:i" }}</p>
+    <p>{{ review.comment|linebreaks }}</p>
+  </div>
+</div>
+{% endblock %}
