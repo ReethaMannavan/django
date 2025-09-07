@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.title }}{% endblock %}
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h2>{{ object.title }}</h2>
+    <p>{{ object.company }} | {{ object.location }}</p>
+    <p>{{ object.description }}</p>
+  </div>
+
+  {% if user.is_authenticated and user.role == 'applicant' %}
+  <div class="col-md-4">
+    {% if has_applied %}
+      <div class="alert alert-info">You have already applied for this job.</div>
+    {% else %}
+      <h5>Apply Now</h5>
+      <form method="post" enctype="multipart/form-data" action="{% url 'jobapp:job_apply' object.pk %}">
+        {% csrf_token %}
+        {{ application_form.non_field_errors }}
+        <div class="mb-2">{{ application_form.resume.label_tag }} {{ application_form.resume }}</div>
+        <div class="mb-2">{{ application_form.cover_letter.label_tag }} {{ application_form.cover_letter }}</div>
+        <button class="btn btn-success">Submit Application</button>
+      </form>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

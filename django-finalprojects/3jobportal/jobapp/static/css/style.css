@@ -1,0 +1,22 @@
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.navbar-brand {
+    color: #B285C0 !important;
+}
+
+.btn-primary {
+    background-color: #B285C0;
+    border-color: #B285C0;
+}
+
+.btn-primary:hover {
+    background-color: #9b66a8;
+    border-color: #9b66a8;
+}
