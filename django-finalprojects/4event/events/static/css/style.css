@@ -1,0 +1,30 @@
+body {
+    font-family: "Open Sans", sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar-brand {
+    color: #B285C0 !important; /* purple theme */
+    font-weight: bold;
+}
+
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.btn-primary {
+    background-color: #B285C0;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #9a68a9;
+}
+
+footer {
+    margin-top: 50px;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+}

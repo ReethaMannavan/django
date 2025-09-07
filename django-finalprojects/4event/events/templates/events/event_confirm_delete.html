@@ -1,0 +1,9 @@
+{% extends 'events/base.html' %}
+{% block content %}
+<h3>Delete event: {{ object.title }}</h3>
+<p>Are you sure?</p>
+<form method="post">{% csrf_token %}
+  <button class="btn btn-danger">Yes, delete</button>
+  <a class="btn btn-secondary" href="{{ object.get_absolute_url }}">Cancel</a>
+</form>
+{% endblock %}
