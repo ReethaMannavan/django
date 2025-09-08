@@ -1,0 +1,75 @@
+{% extends 'blog/base.html' %}
+{% block title %}Blogs{% endblock %}
+
+{% block content %}
+<div class="row mb-3">
+  <div class="col-md-8"><h2>Blogs</h2></div>
+  {% if user.is_authenticated %}
+    <div class="col-md-4 text-end">
+      <a href="{% url 'blog:post_create' %}" class="btn btn-primary">Add Blog</a>
+    </div>
+  {% endif %}
+</div>
+
+<form method="get" class="row g-2 mb-3">
+  <div class="col-sm-6">{{ search_form.q }}</div>
+  <div class="col-sm-4">
+    <select name="category" class="form-select">
+      <option value="">All Categories</option>
+      {% for cat in categories %}
+        <option value="{{ cat.id }}" {% if request.GET.category == cat.id|stringformat:"s" %}selected{% endif %}>
+          {{ cat.name }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="col-sm-2">
+    <button class="btn btn-success w-100">Filter</button>
+  </div>
+</form>
+
+<div class="row">
+  {% for post in posts %}
+    <div class="col-md-6 mb-3">
+      <div class="card p-3 h-100">
+        {% if post.image %}
+          <img src="{{ post.image.url }}" class="img-fluid mb-2" alt="image">
+        {% endif %}
+        <h5><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h5>
+        <p class="mb-1 small text-muted">By {{ post.author.username }} • {{ post.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
+        <p>{{ post.content|truncatewords:20 }}</p>
+        <p>
+          Categories:
+          {% for cat in post.categories.all %}
+            <span class="badge bg-secondary">{{ cat.name }}</span>
+          {% endfor %}
+        </p>
+      </div>
+    </div>
+  {% empty %}
+    <p>No blogs found.</p>
+  {% endfor %}
+</div>
+
+<nav>
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+          Previous
+        </a>
+      </li>
+    {% endif %}
+
+    <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+
+    {% if page_obj.has_next %}
+      <li class="page-item">
+        <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.category %}&category={{ request.GET.category }}{% endif %}">
+          Next
+        </a>
+      </li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}

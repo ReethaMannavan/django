@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% block title %}Delete Comment{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h2>Delete Comment</h2>
+  <blockquote class="border p-3">{{ object.text }}
+    <footer class="blockquote-footer">{{ object.user.username }}</footer>
+  </blockquote>
+  <form method="post">
+    {% csrf_token %}
+    <a href="{{ object.post.get_absolute_url }}" class="btn btn-secondary">Cancel</a>
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
+</div>
+{% endblock %}

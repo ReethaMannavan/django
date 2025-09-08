@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<h2>{{ post.title }}</h2>
+<p class="text-muted">By {{ post.author.username }} • {{ post.created_at|date:"SHORT_DATETIME_FORMAT" }}</p>
+
+{% if post.image %}
+  <img src="{{ post.image.url }}" class="img-fluid mb-2">
+{% endif %}
+
+<p>{{ post.content }}</p>
+
+<p>Categories:
+  {% for cat in post.categories.all %}
+    <span class="badge bg-secondary">{{ cat.name }}</span>
+  {% endfor %}
+</p>
+
+{% if user == post.author %}
+  <a href="{% url 'blog:post_edit' post.pk %}" class="btn btn-sm btn-warning">Edit</a>
+  <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-sm btn-danger">Delete</a>
+{% endif %}
+
+<hr>
+<h4>Comments ({{ comments.count }})</h4>
+
+{% for comment in comments %}
+  <div class="mb-2 p-2 border">
+    <p>{{ comment.user.username }}: {{ comment.text }}</p>
+    <small class="text-muted">{{ comment.created_at|date:"SHORT_DATETIME_FORMAT" }}</small>
+    {% if user == comment.user %}
+      <div>
+        <a href="{% url 'blog:comment_edit' comment.pk %}" class="btn btn-sm btn-warning">Edit</a>
+        <a href="{% url 'blog:comment_delete' comment.pk %}" class="btn btn-sm btn-danger">Delete</a>
+      </div>
+    {% endif %}
+  </div>
+{% empty %}
+  <p>No comments yet.</p>
+{% endfor %}
+
+{% if user.is_authenticated %}
+  <form method="post" action="{% url 'blog:comment_add' post.pk %}">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    <button class="btn btn-primary">Add Comment</button>
+  </form>
+{% else %}
+  <p><a href="{% url 'login' %}">Login</a> to comment.</p>
+{% endif %}
+{% endblock %}

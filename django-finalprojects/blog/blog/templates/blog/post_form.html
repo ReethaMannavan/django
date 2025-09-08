@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+    {% if view.object %}
+        {{ view.object.title }}
+    {% else %}
+        Add Blog
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <h2>
+      {% if view.object %}
+        {{ view.object.title }}
+      {% else %}
+        Add Blog
+      {% endif %}
+    </h2>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button class="btn btn-success w-100">Save</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
