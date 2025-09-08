@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Employer Dashboard{% endblock %}
+{% block content %}
+<h2>Employer Dashboard</h2>
+<a href="{% url 'jobapp:job_post' %}" class="btn btn-primary mb-3">Post New Job</a>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Company</th>
+      <th>Applications</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for job in jobs %}
+      <tr>
+        <td>{{ job.title }}</td>
+        <td>{{ job.company }}</td>
+        <td>{{ job.applications.count }}</td>
+        <td>
+          <a href="{% url 'jobapp:job_edit' job.pk %}" class="btn btn-sm btn-warning">Edit</a>
+          <a href="{% url 'jobapp:job_delete' job.pk %}" class="btn btn-sm btn-danger">Delete</a>
+        </td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="4">No jobs posted yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
