@@ -135,6 +135,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:3001",  # React dev server
+    "https://lucent-fairy-adb94e.netlify.app",
 ]
 
 
@@ -146,3 +147,4 @@ CORS_ALLOW_ALL_METHODS = True
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
