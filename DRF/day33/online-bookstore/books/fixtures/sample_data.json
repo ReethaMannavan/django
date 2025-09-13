@@ -1,0 +1,84 @@
+[
+  {
+    "model": "books.author",
+    "pk": 1,
+    "fields": {
+      "name": "J.K. Rowling",
+      "bio": "Author of the Harry Potter series."
+    }
+  },
+  {
+    "model": "books.author",
+    "pk": 2,
+    "fields": {
+      "name": "George R.R. Martin",
+      "bio": "Author of A Song of Ice and Fire."
+    }
+  },
+  {
+    "model": "books.category",
+    "pk": 1,
+    "fields": {
+      "name": "Fantasy"
+    }
+  },
+  {
+    "model": "books.category",
+    "pk": 2,
+    "fields": {
+      "name": "Science Fiction"
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 1,
+    "fields": {
+      "title": "Harry Potter and the Philosopher's Stone",
+      "description": "The first book in the Harry Potter series.",
+      "price": "29.99",
+      "rating": "4.9",
+      "published_date": "1997-06-26",
+      "author": 1,
+      "category": 1
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 2,
+    "fields": {
+      "title": "A Game of Thrones",
+      "description": "The first book in A Song of Ice and Fire.",
+      "price": "39.99",
+      "rating": "4.8",
+      "published_date": "1996-08-06",
+      "author": 2,
+      "category": 1
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 3,
+    "fields": {
+      "title": "A Clash of Kings",
+      "description": "The second book in A Song of Ice and Fire.",
+      "price": "42.50",
+      "rating": "4.7",
+      "published_date": "1998-11-16",
+      "author": 2,
+      "category": 1
+    }
+  },
+  {
+    "model": "books.book",
+    "pk": 4,
+    "fields": {
+      "title": "The Casual Vacancy",
+      "description": "A modern novel by J.K. Rowling.",
+      "price": "19.99",
+      "rating": "3.8",
+      "published_date": "2012-09-27",
+      "author": 1,
+      "category": 2
+    }
+  }
+]
