@@ -1,0 +1,108 @@
+[
+  {
+    "model": "courses.course",
+    "pk": 1,
+    "fields": {
+      "title": "Introduction to Python",
+      "description": "Learn Python from scratch."
+    }
+  },
+  {
+    "model": "courses.course",
+    "pk": 2,
+    "fields": {
+      "title": "Web Development Bootcamp",
+      "description": "Full-stack web development."
+    }
+  },
+  {
+    "model": "courses.module",
+    "pk": 1,
+    "fields": {
+      "course": 1,
+      "title": "Getting Started",
+      "description": "Introductory module"
+    }
+  },
+  {
+    "model": "courses.module",
+    "pk": 2,
+    "fields": {
+      "course": 1,
+      "title": "Advanced Python",
+      "description": "Deep dive into Python"
+    }
+  },
+  {
+    "model": "courses.module",
+    "pk": 3,
+    "fields": {
+      "course": 2,
+      "title": "HTML & CSS Basics",
+      "description": "Learn front-end basics"
+    }
+  },
+  {
+    "model": "courses.module",
+    "pk": 4,
+    "fields": {
+      "course": 2,
+      "title": "JavaScript & React",
+      "description": "Learn JS and React"
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 1,
+    "fields": {
+      "module": 1,
+      "title": "Variables in Python",
+      "content": "Variables are used to store data."
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 2,
+    "fields": {
+      "module": 1,
+      "title": "Data Types",
+      "content": "Python has int, str, list, dict, etc."
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 3,
+    "fields": {
+      "module": 2,
+      "title": "Functions",
+      "content": "Functions allow reusable code blocks."
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 4,
+    "fields": {
+      "module": 2,
+      "title": "Classes & OOP",
+      "content": "Object-Oriented Programming in Python."
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 5,
+    "fields": {
+      "module": 3,
+      "title": "HTML Structure",
+      "content": "Learn the structure of HTML pages."
+    }
+  },
+  {
+    "model": "courses.lesson",
+    "pk": 6,
+    "fields": {
+      "module": 4,
+      "title": "React Components",
+      "content": "Learn how to create React components."
+    }
+  }
+]
