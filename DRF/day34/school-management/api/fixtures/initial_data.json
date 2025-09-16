@@ -1,0 +1,32 @@
+[
+  {
+    "model": "api.school",
+    "pk": 1,
+    "fields": {
+      "name": "Greenwood High"
+    }
+  },
+  {
+    "model": "api.subject",
+    "pk": 1,
+    "fields": {
+      "name": "Mathematics"
+    }
+  },
+  {
+    "model": "api.teacher",
+    "pk": 1,
+    "fields": {
+      "name": "Mr. Smith",
+      "subjects": [1]
+    }
+  },
+  {
+    "model": "api.student",
+    "pk": 1,
+    "fields": {
+      "name": "John Doe",
+      "school": 1
+    }
+  }
+]
