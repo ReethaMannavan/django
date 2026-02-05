@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}Applications{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2 style="color:#1e3a8a; margin-bottom:20px;">All Candidate Applications</h2>
+
+    <!-- ---------------- Filter/Search ---------------- -->
+    <form method="get" style="margin-bottom:20px; display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <input type="text" name="q" placeholder="Search candidate or job..." value="{{ request.GET.q|default:'' }}" style="padding:6px 10px; border-radius:4px; border:1px solid #ccc;">
+        <select name="status" style="padding:6px 10px; border-radius:4px; border:1px solid #ccc;">
+            <option value="">All Status</option>
+            <option value="applied" {% if request.GET.status == 'applied' %}selected{% endif %}>Applied</option>
+            <option value="shortlisted" {% if request.GET.status == 'shortlisted' %}selected{% endif %}>Shortlisted</option>
+            <option value="rejected" {% if request.GET.status == 'rejected' %}selected{% endif %}>Rejected</option>
+        </select>
+        <button type="submit" style="padding:6px 12px; background:#1e3a8a; color:white; border-radius:4px; border:none;">Filter</button>
+    </form>
+
+    {% if applications %}
+    <table style="width:100%; border-collapse: collapse; text-align:left;">
+        <thead>
+            <tr style="background:#1e3a8a; color:white;">
+                <th style="padding:12px; border:1px solid #ddd;">Candidate</th>
+                <th style="padding:12px; border:1px solid #ddd;">Job</th>
+                <th style="padding:12px; border:1px solid #ddd;">Status</th>
+                <th style="padding:12px; border:1px solid #ddd;">Applied At</th>
+                <th style="padding:12px; border:1px solid #ddd;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for app in applications %}
+            <tr style="background:{% cycle '#f9fafb' '#ffffff' %};">
+                <td style="padding:10px; border:1px solid #ddd;">{{ app.candidate.username }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">{{ app.job.title }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">
+                    {% if app.status == 'applied' %}
+                        <span style="background:#facc15; color:black; padding:3px 8px; border-radius:4px; font-weight:600;">Applied</span>
+                    {% elif app.status == 'shortlisted' %}
+                        <span style="background:#10b981; color:white; padding:3px 8px; border-radius:4px; font-weight:600;">Shortlisted</span>
+                    {% elif app.status == 'rejected' %}
+                        <span style="background:#ef4444; color:white; padding:3px 8px; border-radius:4px; font-weight:600;">Rejected</span>
+                    {% else %}
+                        <span>{{ app.status|capfirst }}</span>
+                    {% endif %}
+                </td>
+                <td style="padding:10px; border:1px solid #ddd;">{{ app.applied_at|date:"d M Y H:i" }}</td>
+                <td style="padding:10px; border:1px solid #ddd;">
+                    <form method="post" style="display:flex; gap:5px;">
+                        {% csrf_token %}
+                        <input type="hidden" name="application_id" value="{{ app.id }}">
+                        <button type="submit" name="status" value="shortlisted" style="padding:4px 8px; background:#10b981; color:white; border:none; border-radius:4px;">Shortlist</button>
+                        <button type="submit" name="status" value="rejected" style="padding:4px 8px; background:#ef4444; color:white; border:none; border-radius:4px;">Reject</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div style="margin-top:20px; text-align:center; display:flex; justify-content:center; gap:10px;">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}&status={{ request.GET.status }}" style="padding:6px 12px; background:#1e3a8a; color:white; border-radius:4px;">Previous</a>
+        {% endif %}
+        <span style="padding:6px 12px;">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}&status={{ request.GET.status }}" style="padding:6px 12px; background:#1e3a8a; color:white; border-radius:4px;">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+
+    {% else %}
+    <p>No applications found.</p>
+    {% endif %}
+</div>
+{% endblock %}

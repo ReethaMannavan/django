@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}AI Resume Optimizer | VCS Careers{% endblock %}
+
+{% block content %}
+<h1 style="color:#1e3a8a;">AI Resume Optimizer</h1>
+<p>Optimize your resume for better job matches.</p>
+
+<div class="card">
+    <h3>Upload Resume</h3>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <input type="file" name="resume" accept=".pdf,.doc,.docx" required>
+        <button type="submit">Analyze & Optimize</button>
+    </form>
+</div>
+
+{% if messages %}
+    {% for message in messages %}
+        <div style="color:green;">{{ message }}</div>
+    {% endfor %}
+{% endif %}
+{% endblock %}

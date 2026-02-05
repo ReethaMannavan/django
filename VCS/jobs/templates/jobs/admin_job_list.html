@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}Admin Jobs{% endblock %}
+
+{% block content %}
+<h2 style="color:#1e3a8a;">Manage Jobs</h2>
+
+<a href="{% url 'admin-job-create' %}" style="background:#2563eb; color:white; padding:10px 16px; border-radius:6px;">
+  + Post New Job
+</a>
+
+<table style="width:100%; margin-top:20px; border-collapse:collapse;">
+  <tr style="background:#e5e7eb;">
+    <th>Title</th>
+    <th>Company</th>
+    <th>Location</th>
+    <th>Type</th>
+    <th>Actions</th>
+  </tr>
+
+  {% for job in jobs %}
+  <tr>
+    <td>{{ job.title }}</td>
+    <td>{{ job.company }}</td>
+    <td>{{ job.location }}</td>
+    <td>{{ job.get_job_type_display }}</td>
+    <td>
+      <a href="{% url 'admin-job-update' job.pk %}">Edit</a> |
+      <a href="{% url 'admin-job-delete' job.pk %}" style="color:red;">Delete</a>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

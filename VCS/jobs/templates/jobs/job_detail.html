@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}{{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2>{{ job.title }}</h2>
+
+    <p><strong>Company:</strong> {{ job.company }}</p>
+    <p><strong>Location:</strong> {{ job.location }}</p>
+    <p><strong>Experience:</strong> {{ job.experience }}</p>
+    <p><strong>Type:</strong> {{ job.get_job_type_display }}</p>
+
+    <hr style="margin:20px 0;">
+
+    {% if user.is_authenticated %}
+        {% if has_applied %}
+            <p style="color:#10b981; font-weight:600;">
+                Application Status: {{ application_status|capfirst }}
+            </p>
+        {% else %}
+            <a href="{% url 'job-apply' job.pk %}"
+               style="background:#10b981; padding:10px 20px; color:white; border-radius:6px; text-decoration:none;">
+               Apply Now
+            </a>
+        {% endif %}
+
+        {% if is_saved %}
+            <a href="{% url 'unsave-job' job.pk %}"
+               style="margin-left:10px; background:#f59e0b; padding:10px 20px; color:white; border-radius:6px; text-decoration:none;">
+               Saved
+            </a>
+        {% else %}
+            <a href="{% url 'save-job' job.pk %}"
+               style="margin-left:10px; background:#2563eb; padding:10px 20px; color:white; border-radius:6px; text-decoration:none;">
+               Save Job
+            </a>
+        {% endif %}
+    {% else %}
+        <p>Please login to apply or save jobs.</p>
+    {% endif %}
+</div>
+{% endblock %}

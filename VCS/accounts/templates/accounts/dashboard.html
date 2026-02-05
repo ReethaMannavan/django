@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | VCS Careers{% endblock %}
+
+{% block content %}
+<h1 style="color:#1e3a8a; margin-bottom: 20px;">Welcome, {{ user.username }}!</h1>
+
+<div class="grid">
+
+  <!-- ------------------ Free User ------------------ -->
+  {% if user.role == 'free' %}
+  <div class="card">
+    <h3>Profile Completion</h3>
+    <p>Complete your profile and upload your resume to get matched with relevant jobs.</p>
+    {% if user.candidateprofile %}
+      <div style="background:#e5e7eb; border-radius:6px; height:12px; margin:10px 0;">
+        <div style="width:{{ user.candidateprofile.profile_completion }}%; background:#2563eb; height:100%; border-radius:6px;"></div>
+      </div>
+    {% else %}
+      <p style="color:#9ca3af;">Profile not created yet.</p>
+    {% endif %}
+    <a href="{% url 'profile' %}">Complete Profile</a>
+  </div>
+
+  <div class="card">
+    <h3>Saved Jobs</h3>
+    {% if user.saved_jobs.exists %}
+      <p>You have {{ user.saved_jobs.count }} saved job{{ user.saved_jobs.count|pluralize }}.</p>
+      <a href="{% url 'saved-jobs' %}">View Saved Jobs</a>
+    {% else %}
+      <p>No saved jobs yet. Browse jobs and save them to apply later.</p>
+      <a href="{% url 'job-list' %}">Search Jobs</a>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Upgrade to Pro</h3>
+    <p>Unlock AI resume optimization, advanced job matching, and AI Chatbot for interview preparation.</p>
+    <a href="#">Upgrade Now</a>
+  </div>
+  {% endif %}
+
+  <!-- ------------------ Pro User ------------------ -->
+  {% if user.role == 'pro' %}
+  <!-- Always visible cards -->
+  <div class="card">
+    <h3>Profile Completion</h3>
+    <p>Keep your profile up to date for the best job matches.</p>
+    <div style="background:#e5e7eb; border-radius:6px; height:12px; margin:10px 0;">
+      {% if user.candidateprofile %}
+        <div style="width:{{ user.candidateprofile.profile_completion }}%; background:#2563eb; height:100%; border-radius:6px;"></div>
+      {% else %}
+        <p style="color:#9ca3af;">Profile not created yet.</p>
+      {% endif %}
+    </div>
+    <a href="{% url 'profile' %}">Edit Profile</a>
+  </div>
+
+  <div class="card">
+    <h3>Saved Jobs</h3>
+    <p>View saved jobs and track your application status.</p>
+    <a href="{% url 'saved-jobs' %}">View Jobs</a>
+  </div>
+
+  <!-- ------------------ Paid Features Card ------------------ -->
+  <div class="card paid-features">
+    <h3>Pro Features 🔒</h3>
+    <p>Pay ₹1000 to unlock all Pro features: AI Resume Optimizer, Advanced Job Matching, VTS Training, and AI Chatbot.</p>
+    
+    <div id="proFeatures" style="display:none; margin-top:10px;">
+      <div class="pro-feature">
+        <h4>AI Resume Optimizer</h4>
+        <a href="{% url 'pro-feature' %}">Optimize Resume</a>
+      </div>
+      <div class="pro-feature">
+        <h4>Advanced Job Matching</h4>
+        <a href="{% url 'pro-job-matching' %}">View Matches</a>
+      </div>
+      <div class="pro-feature">
+        <h4>VTS Training</h4>
+        <a href="{% url 'pro-feature' %}">View Courses</a>
+      </div>
+      <div class="pro-feature">
+        <h4>AI Chatbot (Interview Prep)</h4>
+        <a href="{% url 'pro-interview-chatbot' %}">Start Chatbot</a>
+      </div>
+    </div>
+
+    <button id="unlockBtn" onclick="openPaymentModal()" style="margin-top:10px; padding:10px 20px; background:#2563eb; color:white; border:none; border-radius:6px;">Unlock Pro Features</button>
+  </div>
+
+  {% endif %}
+
+  <!-- ------------------ Admin User ------------------ -->
+  {% if user.role == 'admin' %}
+  <div class="card">
+    <h3>User Management</h3>
+    <p>View and manage Free and Pro users.</p>
+    <a href="#">Manage Users</a>
+  </div>
+
+  <div class="card">
+    <h3>Job Postings</h3>
+    <p>Create, edit, and manage job listings for candidates.</p>
+    <a href="{% url 'job-list' %}">Manage Jobs</a>
+  </div>
+
+  <div class="card">
+    <h3>Analytics</h3>
+    <p>Track platform usage, applications, and performance metrics.</p>
+    <a href="#">View Analytics</a>
+  </div>
+
+  <div class="card">
+    <h3>Consultant Queue</h3>
+    <p>Manage escalated queries and appointments.</p>
+    <a href="#">View Queue</a>
+  </div>
+  {% endif %}
+
+</div>
+
+<!-- ------------------ Dummy Payment Modal ------------------ -->
+<div id="paymentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; 
+    background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
+  <div style="background:#fff; padding:30px; border-radius:10px; text-align:center; width:350px;">
+    <h3>Unlock Pro Features</h3>
+    <p> Pay ₹1000 to unlock all Pro features.</p>
+    <button onclick="unlockProFeatures()" style="padding:10px 20px; background:#2563eb; color:#fff; border:none; border-radius:6px;">Pay & Unlock</button>
+    <button onclick="closePaymentModal()" style="padding:10px 20px; margin-left:10px; border:1px solid #2563eb; border-radius:6px;">Cancel</button>
+  </div>
+</div>
+
+<script>
+  function openPaymentModal() {
+    document.getElementById('paymentModal').style.display = 'flex';
+  }
+
+  function closePaymentModal() {
+    document.getElementById('paymentModal').style.display = 'none';
+  }
+
+  function unlockProFeatures() {
+    // Show all pro features inside the card
+    document.getElementById('proFeatures').style.display = 'block';
+    // Hide unlock button
+    document.getElementById('unlockBtn').style.display = 'none';
+    closePaymentModal();
+    alert('All Pro features unlocked! (Demo)');
+  }
+</script>
+
+<style>
+  .paid-features {
+    background:#f3f4f6;
+  }
+  .paid-features .pro-feature {
+    border-top:1px solid #e5e7eb;
+    padding-top:8px;
+    margin-top:8px;
+  }
+</style>
+
+{% endblock %}

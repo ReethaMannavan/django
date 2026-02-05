@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Candidate Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #333333;
+        }
+
+        .header {
+            background: #000000;
+            color: #ffffff;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .header a {
+            color: #00aaff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .header a:hover {
+            text-decoration: underline;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background: #f5f5f5;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
+        }
+
+        form label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        form input, form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 1em;
+        }
+
+        form button {
+            background: #00aaff;
+            color: #fff;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        form button:hover {
+            background: #0088cc;
+        }
+
+        .progress {
+            background: #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-bar {
+            height: 18px;
+            background: #00aaff;
+            width: 0%;
+            text-align: center;
+            color: #fff;
+            font-weight: 500;
+            line-height: 18px;
+            transition: width 0.4s ease;
+        }
+
+        .resume-section {
+            margin: 15px 0;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+        .resume-section a {
+            color: #0077cc;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .resume-section a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>Candidate Profile</h1>
+    <a href="{% url 'dashboard' %}">Dashboard</a> |
+    <a href="{% url 'logout' %}">Logout</a>
+</div>
+
+<div class="container">
+    <div class="card">
+
+        <!-- Django messages -->
+        {% if messages %}
+            {% for message in messages %}
+                <div style="padding: 10px; margin-bottom: 10px; border-radius: 5px; background: {% if message.tags == 'success' %}#d4edda{% else %}#f8d7da{% endif %}; color: #000;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="progress">
+            <div class="progress-bar" style="width: {{ completion }}%;">{{ completion }}%</div>
+        </div>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            {% if form.instance.resume %}
+                <div class="resume-section">
+                    <span>Current Resume:</span>
+                    <a href="{{ form.instance.resume.url }}" target="_blank">
+                        View / Download
+                    </a>
+                </div>
+            {% endif %}
+
+            <button type="submit">Save Profile</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,118 @@
+<!-- {% extends 'base.html' %}
+
+{% block title %}Dashboard | VCS Careers{% endblock %}
+
+{% block content %}
+<h1 style="color:#1e3a8a; margin-bottom: 20px;">Welcome, {{ user.username }}!</h1>
+
+<div class="grid">
+
+  <!-- ------------------ Free User ------------------ -->
+  {% if user.role == 'free' %}
+  <div class="card">
+    <h3>Profile Completion</h3>
+    <p>Complete your profile and upload your resume to get matched with relevant jobs.</p>
+    {% if user.candidateprofile %}
+      <div style="background:#e5e7eb; border-radius:6px; height:12px; margin:10px 0;">
+        <div style="width:{{ user.candidateprofile.profile_completion }}%; background:#2563eb; height:100%; border-radius:6px;"></div>
+      </div>
+    {% else %}
+      <p style="color:#9ca3af;">Profile not created yet.</p>
+    {% endif %}
+    <a href="{% url 'profile' %}">Complete Profile</a>
+  </div>
+
+  <div class="card">
+    <h3>Saved Jobs</h3>
+    {% if user.saved_jobs.exists %}
+      <p>You have {{ user.saved_jobs.count }} saved job{{ user.saved_jobs.count|pluralize }}.</p>
+      <a href="{% url 'saved-jobs' %}">View Saved Jobs</a>
+    {% else %}
+      <p>No saved jobs yet. Browse jobs and save them to apply later.</p>
+      <a href="{% url 'job-list' %}">Search Jobs</a>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <h3>Upgrade to Pro</h3>
+    <p>Unlock AI resume optimization, advanced job matching, and priority consultant support.</p>
+    <a href="#">Upgrade Now</a>
+  </div>
+  {% endif %}
+
+  <!-- ------------------ Pro User ------------------ -->
+  {% if user.role == 'pro' %}
+  <div class="card">
+    <h3>Profile Completion</h3>
+    <p>Keep your profile up to date for the best job matches.</p>
+    <div style="background:#e5e7eb; border-radius:6px; height:12px; margin:10px 0;">
+      {% if user.candidateprofile %}
+        <div style="width:{{ user.candidateprofile.profile_completion }}%; background:#2563eb; height:100%; border-radius:6px;"></div>
+      {% else %}
+        <p style="color:#9ca3af;">Profile not created yet.</p>
+      {% endif %}
+    </div>
+    <a href="{% url 'profile' %}">Edit Profile</a>
+  </div>
+
+  <div class="card">
+    <h3>Saved Jobs</h3>
+    <p>View saved jobs and track your application status.</p>
+    <a href="{% url 'saved-jobs' %}">View Jobs</a>
+  </div>
+
+  <div class="card">
+    <h3>AI Resume Optimizer</h3>
+    <p>Optimize your resume for better chances of getting interviews.</p>
+    <a href="{% url 'pro-feature' %}">Optimize Resume</a>
+  </div>
+
+  <div class="card">
+    <h3>Advanced Job Matching</h3>
+    <p>See jobs matched based on your skills with a match percentage score.</p>
+    <a href="{% url 'pro-job-matching' %}">View Matches</a>
+  </div>
+
+  <div class="card">
+    <h3>VTS Training</h3>
+    <p>Access courses, track progress, and view certificates.</p>
+    <a href="{% url 'pro-feature' %}">View Courses</a>
+  </div>
+
+  <div class="card">
+    <h3>Priority Consultant Access</h3>
+    <p>Request guidance from consultants with priority support.</p>
+    <a href="{% url 'pro-consultant' %}">Request Consultant</a>
+  </div>
+  {% endif %}
+
+
+  <!-- ------------------ Admin User ------------------ -->
+  {% if user.role == 'admin' %}
+  <div class="card">
+    <h3>User Management</h3>
+    <p>View and manage Free and Pro users.</p>
+    <a href="#">Manage Users</a>
+  </div>
+
+  <div class="card">
+    <h3>Job Postings</h3>
+    <p>Create, edit, and manage job listings for candidates.</p>
+    <a href="{% url 'job-list' %}">Manage Jobs</a>
+  </div>
+
+  <div class="card">
+    <h3>Analytics</h3>
+    <p>Track platform usage, applications, and performance metrics.</p>
+    <a href="#">View Analytics</a>
+  </div>
+
+  <div class="card">
+    <h3>Consultant Queue</h3>
+    <p>Manage escalated queries and appointments.</p>
+    <a href="#">View Queue</a>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %} -->
