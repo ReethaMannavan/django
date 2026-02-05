@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
+
 from pathlib import Path
+
+
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -153,16 +158,18 @@ AUTH_USER_MODEL = 'accounts.CustomUser'
 
 
 SOCIALACCOUNT_PROVIDERS = {
-    'google': {
-        'SCOPE': ['profile', 'email'],
-        'AUTH_PARAMS': {'access_type': 'online'},
-        'APP': {
-            'client_id': '',
-            'secret': '',
-            'key': ''
-        }
+    "google": {
+        "SCOPE": ["profile", "email"],
+        "AUTH_PARAMS": {"access_type": "online"},
+        "APP": {
+            "client_id": "1010513398588-kfpv5ckqaknelq731klq83j4upqdl37p.apps.googleusercontent.com",
+            "secret": "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",
+            "key": ""
+        },
     }
 }
+
+
 
 
 # Internationalization
