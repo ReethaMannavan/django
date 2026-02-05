@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<h1 style="color:#1e3a8a;">Admin Dashboard</h1>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>Manage Jobs</h3>
+    <p>Create, edit, and delete job postings.</p>
+    <a href="{% url 'admin-job-list' %}">Manage Jobs</a>
+
+  </div>
+
+  <div class="card">
+    <h3>Applications</h3>
+    <p>View all candidate applications.</p>
+    <a href="{% url 'admin-applications' %}">View Applications</a>
+  </div>
+
+  <div class="card">
+    <h3>Users</h3>
+    <p>View Free and Pro users.</p>
+    <a class="nav-link" href="{% url 'admin-analytics' %}">Analytics</a>
+  </div>
+
+</div>
+{% endblock %}

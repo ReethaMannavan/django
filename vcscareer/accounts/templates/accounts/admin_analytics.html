@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Analytics{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <h2 class="text-primary fw-bold mb-4">Platform Analytics</h2>
+
+  <div class="row g-4">
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Total Users</h5>
+          <p class="display-6">{{ total_users }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Free Users</h5>
+          <p class="display-6">{{ free_users }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Pro Users</h5>
+          <p class="display-6">{{ pro_users }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Conversion Rate</h5>
+          <p class="display-6">{{ conversion_rate }}%</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Total Jobs</h5>
+          <p class="display-6">{{ total_jobs }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Total Applications</h5>
+          <p class="display-6">{{ total_applications }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      <div class="card shadow-sm text-center">
+        <div class="card-body">
+          <h5>Saved Jobs</h5>
+          <p class="display-6">{{ total_saved_jobs }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+{% endblock %}
