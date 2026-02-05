@@ -1,0 +1,315 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load job_tags %}
+{% block title %}Job Listings{% endblock %}
+
+{% block content %}
+<div class="page-container">
+    <h2 style="margin-bottom:20px;">Job Openings</h2>
+
+    <!-- Search / Filter -->
+    <form method="get" class="filter-form">
+        <input type="text" name="q" placeholder="Search by title" value="{{ request.GET.q }}">
+        <input type="text" name="location" placeholder="Location" value="{{ request.GET.location }}">
+        <select name="job_type">
+            <option value="">All Types</option>
+            <option value="fulltime" {% if request.GET.job_type == 'fulltime' %}selected{% endif %}>Full-Time</option>
+            <option value="parttime" {% if request.GET.job_type == 'parttime' %}selected{% endif %}>Part-Time</option>
+            <option value="internship" {% if request.GET.job_type == 'internship' %}selected{% endif %}>Internship</option>
+            <option value="contract" {% if request.GET.job_type == 'contract' %}selected{% endif %}>Contract</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <!-- Job Cards -->
+    <div class="grid">
+        {% for job, is_new in jobs_with_new %}
+        <div class="card">
+            <div style="display:flex; justify-content: space-between; align-items:center;">
+                <h3>{{ job.title }}</h3>
+                {% if is_new %}
+                <span style="background:#10b981; color:white; padding:2px 8px; border-radius:4px; font-size:12px;">NEW</span>
+                {% endif %}
+            </div>
+
+            <p><strong>Company:</strong> {{ job.company }}</p>
+            <p><strong>Location:</strong> {{ job.location }}</p>
+            <p><strong>Experience:</strong> {{ job.experience }}</p>
+            <p><strong>Type:</strong>
+                <span style="padding:2px 6px; background:#2563eb; color:white; border-radius:4px; font-size:12px;">
+                    {{ job.get_job_type_display }}
+                </span>
+            </p>
+
+            <!-- Saved / Apply Buttons -->
+            <div class="d-flex flex-wrap gap-2 mt-3">
+
+                <a href="{% url 'job-detail' job.pk %}">View Details</a>
+
+                {% if user.is_authenticated %}
+                    {% if job.id in user_saved_jobs %}
+                        <a href="{% url 'unsave-job' job.pk %}" style="background:#f59e0b;">Saved</a>
+                    {% else %}
+                        <a href="{% url 'save-job' job.pk %}" style="background:#2563eb;">Save</a>
+                    {% endif %}
+
+                    {% if job.id in user_applications %}
+                        <span style="
+    background:#dcfce7;
+    color:#166534;
+    padding:4px 8px;
+    border-radius:6px;
+    font-size:13px;
+    font-weight:600;">
+
+                            {{ user_applications|dict_get:job.id|capfirst }}
+                        </span>
+                    {% else %}
+                        <a href="{% url 'job-apply' job.pk %}" style="background:#10b981;">Apply</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p>No jobs found matching your criteria.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if page_obj.has_other_pages %}
+    <div style="margin-top:30px; text-align:center;">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}{% if request.GET.job_type %}&job_type={{ request.GET.job_type }}{% endif %}">Previous</a>
+        {% endif %}
+
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}{% if request.GET.job_type %}&job_type={{ request.GET.job_type }}{% endif %}">Next</a>
+        {% endif %}
+    </div>
+    {% endif %}
+</div>
+
+<style>
+/* ---------- Base Page Styles ---------- */
+.page-container {
+    max-width: 1150px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* ---------- Headings ---------- */
+.page-container h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1c3b7a;
+    margin-bottom: 18px;
+    border-bottom: 2px solid #2563eb;
+    padding-bottom: 6px;
+}
+
+/* ---------- Filter Form ---------- */
+.filter-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 25px;
+}
+.filter-form input,
+.filter-form select,
+.filter-form button {
+    padding: 10px 14px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+}
+.filter-form button {
+    background: #2563eb;
+    color: #fff;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+}
+.filter-form button:hover {
+    background: #1e40af;
+}
+
+/* ---------- Job Card Container ---------- */
+/* ---------- Job Card Container ---------- */
+.grid {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 20px;
+}
+
+/* ---------- Single Job Card ---------- */
+.card {
+    width: 100%;
+    max-width: 900px;  /* ✔ limits card width */
+    margin: 0 auto;    /* ✔ centers it */
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #e3e6e8;
+    padding: 20px 24px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.04);
+    transition: 0.3s ease;
+}
+
+/* On hover, subtle border + shadow */
+.card:hover {
+    border-color: #2563eb;
+    box-shadow: 0px 4px 12px rgba(37, 99, 235, 0.15);
+}
+
+
+/* ---------- Job Header ---------- */
+.card h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #1f2d5c;
+    margin-bottom: 6px;
+}
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* ---------- Job Badges ---------- */
+.badge-new {
+    background: #2563eb;
+    color: #fff;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ---------- Job Info Text ---------- */
+.card p {
+    margin: 6px 0;
+    font-size: 14.7px;
+    color: #4b5563;
+}
+
+/* ---------- Job Type Tag ---------- */
+.badge-type {
+    display: inline-block;
+    background: #e1ecf8;
+    color: #2563eb;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* ---------- Card Bottom Buttons ---------- */
+.card .btn-group {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+.card a,
+.card span {
+    font-size: 14px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    text-align: center;
+    min-width: 90px;
+    transition: background 0.25s ease, color 0.25s ease;
+}
+
+/* Primary link */
+.card a {
+    background: #2563eb;
+    color: #fff;
+}
+.card a:hover {
+    background: #1e40af;
+}
+
+/* Save / Saved */
+.card .save-btn {
+    background: #f39c12;
+    color: #fff;
+}
+.card .save-btn:hover {
+    background: #d35400;
+}
+
+/* Apply button */
+.card .apply-btn {
+    background: #10b981;
+    color: #fff;
+}
+.card .apply-btn:hover {
+    background: #0e9f6e;
+}
+
+/* Status Tags */
+.card span.status-applied {
+    background: #fcefc7;
+    color: #b07800;
+}
+.card span.status-shortlisted {
+    background: #d1fae5;
+    color: #047857;
+}
+.card span.status-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+
+
+/* Make all card action buttons & status spans look consistent */
+.card .btn,
+.card span.btn-status {
+    display: inline-flex;          /* ensures flex alignment */
+    align-items: center;           /* vertical center text */
+    justify-content: center;       /* horizontal center */
+    padding: 0.45rem 0.75rem;      /* consistent button padding */
+    font-size: 0.875rem;           /* uniform size */
+    line-height: 1.25;             /* smooth height alignment */
+    min-width: 90px;               /* consistent min width */
+    text-align: center;            /* center text */
+}
+
+/* Optional: consistent spacing between icon+text, if you ever add icons */
+.card .btn i,
+.card span.btn-status i {
+    margin-right: 4px;
+}
+
+
+
+/* ---------- Pagination ---------- */
+.pagination-wrapper {
+    text-align: center;
+    margin-top: 30px;
+}
+.pagination-wrapper a {
+    padding: 8px 14px;
+    background: #2563eb;
+    color: #fff;
+    border-radius: 5px;
+    margin: 0 6px;
+    text-decoration: none;
+    transition: background 0.25s ease;
+}
+.pagination-wrapper a:hover {
+    background: #1e40af;
+}
+.pagination-wrapper span {
+    font-weight: 600;
+    color: #1f2d5c;
+}
+</style>
+
+{% endblock %}
