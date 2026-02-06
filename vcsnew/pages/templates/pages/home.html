@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+{% block title %}VCS Careers{% endblock %}
+
+{% block content %}
+
+<!-- HERO SEARCH SECTION -->
+<section class="py-5"
+         style="background:linear-gradient(135deg,#5b21b6,#7c3aed);">
+  <div class="container text-center text-white">
+    <h1 class="fw-bold display-5 mb-3">Find your dream job</h1>
+    <p class="mb-4">Search jobs, build your profile, and grow your career.</p>
+
+    <form method="GET" action="{% url 'job-list' %}" class="row g-2 justify-content-center">
+      <div class="col-md-4">
+        <input class="form-control form-control-lg shadow-sm" name="q" placeholder="Job title">
+      </div>
+      <div class="col-md-3">
+        <input class="form-control form-control-lg shadow-sm" name="location" placeholder="Location">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-light btn-lg w-100">Search</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<!-- jobbycategories -->
+
+<section class="container py-4 text-center">
+  <h5 class="fw-bold mb-3">Browse Jobs by Category</h5>
+
+  <div class="d-flex flex-wrap justify-content-center gap-2">
+
+    <a href="{% url 'job-list' %}?q=developer" class="chip">Developer</a>
+    <a href="{% url 'job-list' %}?q=python" class="chip">Python</a>
+    <a href="{% url 'job-list' %}?q=django" class="chip">Django</a>
+    <a href="{% url 'job-list' %}?q=data" class="chip">Data Analyst</a>
+    <a href="{% url 'job-list' %}?q=marketing" class="chip">Marketing</a>
+    <a href="{% url 'job-list' %}?q=designer" class="chip">UI/UX</a>
+    <a href="{% url 'job-list' %}?q=manager" class="chip">Manager</a>
+    <a href="{% url 'job-list' %}?q=remote" class="chip">Remote Jobs</a>
+
+  </div>
+</section>
+
+
+<!-- jobbylocation -->
+ 
+
+<section class="container py-4 text-center">
+  <h5 class="fw-bold mb-3">Browse Jobs by Location</h5>
+
+  <div class="d-flex flex-wrap justify-content-center gap-2">
+
+    <a href="{% url 'job-list' %}?location=Doha" class="chip">Doha</a>
+    <a href="{% url 'job-list' %}?location=Dubai" class="chip">Dubai</a>
+    <a href="{% url 'job-list' %}?location=Abu Dhabi" class="chip">Abu Dhabi</a>
+    <a href="{% url 'job-list' %}?location=Remote" class="chip">Remote</a>
+    <a href="{% url 'job-list' %}?location=Bangalore" class="chip">Bangalore</a>
+    <a href="{% url 'job-list' %}?location=Chennai" class="chip">Chennai</a>
+    <a href="{% url 'job-list' %}?location=Hyderabad" class="chip">Hyderabad</a>
+
+  </div>
+</section>
+
+
+<section class="py-5" style="background:#f5f3ff;">
+  <div class="container">
+
+    <h3 class="fw-bold mb-4 text-center">Popular Job Categories</h3>
+
+    <div class="row g-4 text-center">
+
+      <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-code-slash fs-2" style="color:#7c3aed;"></i>
+            <h6 class="mt-2">Software Development</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-bar-chart fs-2" style="color:#7c3aed;"></i>
+            <h6 class="mt-2">Data & Analytics</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-briefcase fs-2" style="color:#7c3aed;"></i>
+            <h6 class="mt-2">Business & Management</h6>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-3">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <i class="bi bi-megaphone fs-2" style="color:#7c3aed;"></i>
+            <h6 class="mt-2">Marketing</h6>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="py-5 mt-5"
+         style="background:linear-gradient(135deg,#1e3a8a,#6d28d9); color:white;">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <!-- LEFT SIDE -->
+      <div class="col-md-6">
+
+        <h3 class="fw-bold">VCS Career Tools</h3>
+        <p class="mb-4">
+          Get AI-powered career tools & insights tailored for you
+        </p>
+
+        <div class="d-flex justify-content-between flex-wrap mb-3">
+
+          <div class="tool-box-mini">
+            <i class="bi bi-file-earmark-text"></i>
+            <div>CV Maker</div>
+          </div>
+
+          <div class="tool-box-mini">
+            <i class="bi bi-chat-dots"></i>
+            <div>Interview Q&A</div>
+          </div>
+
+          <div class="tool-box-mini">
+            <i class="bi bi-search"></i>
+            <div>CV Analyzer</div>
+          </div>
+
+          <div class="tool-box-mini">
+            <i class="bi bi-lightbulb"></i>
+            <div>Career Tips</div>
+          </div>
+
+          <div class="tool-box-mini">
+            <i class="bi bi-currency-dollar"></i>
+            <div>Salary Insights</div>
+          </div>
+
+        </div>
+
+        <!-- TRUST SECTION (must stay inside left column) -->
+        <div class="d-flex align-items-center mt-3">
+          <div class="d-flex">
+            <img src="/static/images/avatar1.jfif" class="trust-avatar">
+            <img src="/static/images/avatar2.jfif" class="trust-avatar">
+            <img src="/static/images/avatar3.jfif" class="trust-avatar">
+            <img src="/static/images/avatar1.jfif" class="trust-avatar">
+          </div>
+
+          <small class="ms-3" style="opacity:0.9;">
+            Trusted by 100K+ professionals
+          </small>
+        </div>
+
+      </div>
+
+      <!-- RIGHT SIDE IMAGE -->
+      <div class="col-md-6 text-center">
+        <img src="/static/images/career.jpg" style="max-width:85%;">
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+
+
+
+{% endblock %}

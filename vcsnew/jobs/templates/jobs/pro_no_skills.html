@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block title %}Job Matching{% endblock %}
+
+{% block content %}
+<div style="text-align:center; padding:50px;">
+    <h2 style="color:#1e3a8a;">No Skills Found</h2>
+    <p>Please update your profile skills to view matched jobs.</p>
+    <a href="{% url 'profile' %}" style="color:#2563eb;">Edit Profile</a>
+</div>
+{% endblock %}
