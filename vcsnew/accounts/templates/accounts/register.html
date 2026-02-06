@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% block title %}Register | VCS Careers{% endblock %}
+
+{% block content %}
+
+<style>
+  /* IMPORTANT: don't touch body when using base.html */
+  .auth-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+    background: url("/static/images/loginimage.jpg") no-repeat center center/cover;
+    border-radius: 16px;
+    min-height: 70vh;
+  }
+
+  .form-container {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 36px;
+    border-radius: 12px;
+    width: 420px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  }
+
+  h2 {
+    color: #5b21b6;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  label {
+    display: block;
+    margin-top: 14px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background: #ffffff;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+  }
+
+  .role-options {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+  }
+
+  .role-options label {
+    font-weight: 500;
+    color: #374151;
+    font-size: 14px;
+  }
+
+  .role-options input {
+    margin-right: 6px;
+    accent-color: #7c3aed;
+  }
+
+  .error {
+    color: #dc2626;
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg,#5b21b6,#7c3aed);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  button:hover {
+    background: linear-gradient(135deg,#4c1d95,#6d28d9);
+    transform: translateY(-1px);
+  }
+
+  .link {
+    margin-top: 18px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .link a {
+    color: #7c3aed;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .link a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="auth-page">
+  <div class="form-container">
+      <h2>Register</h2>
+      <form method="post">
+          {% csrf_token %}
+
+          <label>Username</label>
+          <input type="text" name="username" value="{{ username|default:'' }}" placeholder="Enter username">
+          {% if errors.username %}<div class="error">{{ errors.username }}</div>{% endif %}
+
+          <label>Email</label>
+          <input type="email" name="email" value="{{ email|default:'' }}" placeholder="Enter email">
+          {% if errors.email %}<div class="error">{{ errors.email }}</div>{% endif %}
+
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Enter password">
+          {% if errors.password %}<div class="error">{{ errors.password }}</div>{% endif %}
+
+          <label>Choose your plan</label>
+          <div class="role-options">
+              <label>
+                <input type="radio" name="role" value="free"
+                  {% if role == 'free' or not role %}checked{% endif %}>
+                Free
+              </label>
+
+              <label>
+                <input type="radio" name="role" value="pro"
+                  {% if role == 'pro' %}checked{% endif %}>
+                Pro
+              </label>
+          </div>
+          {% if errors.role %}<div class="error">{{ errors.role }}</div>{% endif %}
+
+          <button type="submit">Register</button>
+      </form>
+
+      <div class="link">
+          Already have an account? <a href="{% url 'login' %}">Login here</a>
+      </div>
+  </div>
+</div>
+
+{% endblock %}

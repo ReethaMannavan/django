@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Candidate Profile</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #f6f3ff;
+}
+
+/* Header */
+.header {
+    background: linear-gradient(90deg, #6d28d9, #4c1d95);
+    color: white;
+    padding: 18px 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Layout */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+.profile-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/* Cards */
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 8px 22px rgba(0,0,0,0.05);
+}
+
+/* Progress */
+.progress {
+    background: #ede9fe;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 25px;
+}
+
+.progress-bar {
+    height: 20px;
+    background: linear-gradient(90deg, #7c3aed, #4c1d95);
+    color: white;
+    text-align: center;
+    line-height: 20px;
+}
+
+/* Form */
+form input, form textarea, form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 12px;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+/* Buttons */
+button {
+    background: #6d28d9;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+/* Resume */
+.resume-section {
+    margin-top: 10px;
+    padding: 10px;
+    background: #faf5ff;
+    border-radius: 8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <h2>Candidate Profile</h2>
+    <div>
+        <a href="{% url 'dashboard' %}" style="color:white;">Dashboard</a> |
+        <a href="{% url 'logout' %}" style="color:white;">Logout</a>
+    </div>
+</div>
+
+<div class="container">
+
+    <div class="progress">
+        <div class="progress-bar" style="width: {{ completion }}%;">
+            {{ completion }}%
+        </div>
+    </div>
+
+    <div class="profile-layout">
+
+        <!-- PROFILE SUMMARY -->
+        <div class="card">
+            <h3 style="color:#4c1d95;">Profile Summary</h3>
+
+            {% if form.instance.pk %}
+                {% for field in form %}
+                    <p>
+                        <strong>{{ field.label }}:</strong>
+                        {{ field.value|default:"Not provided" }}
+                    </p>
+                {% endfor %}
+
+                {% if form.instance.resume %}
+                <div class="resume-section">
+                    Resume:
+                    <a href="{{ form.instance.resume.url }}" target="_blank">
+                        View / Download
+                    </a>
+                </div>
+                {% endif %}
+
+                <button onclick="toggleEdit()">Edit Profile</button>
+            {% else %}
+                <p>No profile created yet.</p>
+                <button onclick="toggleEdit()">Create Profile</button>
+            {% endif %}
+        </div>
+
+        <!-- EDIT PANEL (hidden initially) -->
+        <div class="card" id="editPanel" style="display:none;">
+            <h3 style="color:#4c1d95;">Edit Profile</h3>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+
+                {% if form.instance.resume %}
+                <div class="resume-section">
+                    Current Resume:
+                    <a href="{{ form.instance.resume.url }}" target="_blank">
+                        View / Download
+                    </a>
+                </div>
+                {% endif %}
+
+                <button type="submit">Save Profile</button>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function toggleEdit() {
+    const panel = document.getElementById("editPanel");
+    panel.style.display = panel.style.display === "none" ? "block" : "none";
+}
+</script>
+
+</body>
+</html>

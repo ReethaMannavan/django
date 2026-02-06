@@ -1,0 +1,158 @@
+{% extends "base.html" %}
+{% block title %}Login | VCS Careers{% endblock %}
+
+{% block content %}
+
+<style>
+  /* IMPORTANT: Don't style body when extending base.html */
+  .auth-page {
+    min-height: 70vh; /* leaves room for navbar + footer */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 0;
+    background: url("/static/images/loginimage.jpg") no-repeat center center/cover;
+    border-radius: 16px;
+  }
+
+  .form-container {
+    background: rgba(255, 255, 255, 0.85);
+    padding: 36px;
+    border-radius: 12px;
+    width: 420px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.06);
+  }
+
+  h2 {
+    color: #5b21b6;
+    margin-bottom: 24px;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  label {
+    display: block;
+    margin-top: 14px;
+    font-weight: 600;
+    color: #374151;
+    font-size: 14px;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-top: 6px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-size: 14px;
+    background: #ffffff;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: #7c3aed;
+    box-shadow: 0 0 0 2px rgba(124, 58, 237, 0.2);
+  }
+
+  .error {
+    color: #dc2626;
+    margin-top: 6px;
+    font-size: 13px;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 24px;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(135deg,#5b21b6,#7c3aed);
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+
+  button:hover {
+    background: linear-gradient(135deg,#4c1d95,#6d28d9);
+    transform: translateY(-1px);
+  }
+
+  .google-btn {
+    display: block;
+    text-align: center;
+    padding: 12px;
+    background: #ffffff;
+    color: #5b21b6;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    margin-top: 12px;
+    border: 1px solid #e5e7eb;
+    transition: 0.2s;
+  }
+
+  .google-btn:hover {
+    background: #f5f3ff;
+    border-color: #7c3aed;
+  }
+
+  .link {
+    margin-top: 18px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .link a {
+    color: #7c3aed;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .link a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<div class="auth-page">
+  <div class="form-container">
+
+    <h2>Login</h2>
+
+    {% if error %}
+    <div class="error">{{ error }}</div>
+    {% endif %}
+
+    <form method="post">
+        {% csrf_token %}
+
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter username">
+
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Enter password">
+
+        <button type="submit">Login</button>
+
+        <hr style="margin: 24px 0; border: 1px solid #e5e7eb;">
+
+      {% load socialaccount %}
+<a href="{% provider_login_url 'google' process='login' %}&prompt=select_account&login_hint=" class="google-btn">
+  Sign in with Google
+</a>
+
+
+
+    </form>
+
+    <div class="link">
+        New user? <a href="{% url 'register' %}">Register here</a>
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
