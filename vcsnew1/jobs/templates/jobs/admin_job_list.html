@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Jobs{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold">Manage Jobs</h2>
+    <a href="{% url 'admin-job-create' %}" class="btn btn-primary">
+      + Post New Job
+    </a>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      <div class="table-responsive">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Company</th>
+              <th scope="col">Location</th>
+              <th scope="col">Type</th>
+              <th scope="col" class="text-center">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for job in jobs %}
+            <tr>
+              <td>{{ job.title }}</td>
+              <td>{{ job.company }}</td>
+              <td>{{ job.location }}</td>
+              <td>{{ job.get_job_type_display }}</td>
+              <td class="text-center">
+                <a href="{% url 'admin-job-update' job.pk %}" class="btn btn-sm btn-outline-secondary">
+                  Edit
+                </a>
+                <a href="{% url 'admin-job-delete' job.pk %}" class="btn btn-sm btn-outline-danger ms-1">
+                  Delete
+                </a>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

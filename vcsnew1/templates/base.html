@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{% block title %}VCS Careers{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet"
+ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
+    <style>
+      /* Reset */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        height: 100%;
+        font-family: "Segoe UI", sans-serif;
+        background: #ffffff;
+        color: #1f2937;
+      }
+
+      .wrapper {
+        min-height: 100%;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .content {
+        flex: 1;
+      }
+
+      /* Navbar */
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 40px;
+        background: #1e3a8a;
+      }
+
+      .navbar .logo {
+        font-size: 22px;
+        font-weight: bold;
+        color: #ffffff;
+      }
+
+      .navbar .nav-links a {
+        margin-left: 20px;
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 500;
+      }
+
+      .navbar .nav-links a.btn {
+        background: #2563eb;
+        padding: 8px 16px;
+        border-radius: 6px;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .navbar .nav-links a:hover {
+        text-decoration: underline;
+      }
+
+      /* Footer */
+      footer {
+        background: #1e3a8a;
+        color: white;
+        text-align: center;
+        padding: 16px;
+      }
+
+      /* Page container */
+      .page-container {
+        max-width: 1200px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+
+      /* Card component */
+      .card {
+        background: #f9f9f9;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        transition:
+          transform 0.2s,
+          box-shadow 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(30, 58, 138, 0.3);
+      }
+
+      .card h3 {
+        margin-top: 0;
+        color: #1e3a8a;
+        font-weight: 600;
+      }
+
+      .card p {
+        color: #374151;
+        flex: 1;
+      }
+
+      .card a {
+        display: inline-block;
+        margin-top: 15px;
+        background: #2563eb;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        text-align: center;
+        transition: 0.2s;
+      }
+
+      .card a:hover {
+        background: #1e40af;
+      }
+
+      /* Grid for cards */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 25px;
+      }
+
+      .chip {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid #e5e7eb;
+  background: white;
+  color: #1f2937;
+  text-decoration: none;
+  font-size: 16px;
+  transition: 0.2s;
+    border-color: #7c3aed;
+}
+
+.chip:hover {
+  background: #7c3aed;
+  color: white;
+  border-color:gray;
+}
+
+
+.tool-box-mini {
+  width: 18%;
+  text-align: center;
+  padding: 12px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255,255,255,0.25);
+  transition: 0.2s;
+}
+
+.tool-box-mini i {
+  font-size: 20px;
+  display: block;
+}
+
+.tool-box-mini div {
+  font-size: 13px;
+  margin-top: 6px;
+}
+
+.tool-box-mini:hover {
+  background: rgba(255,255,255,0.25);
+  transform: translateY(-2px);
+}
+
+
+.trust-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+  margin-left: -8px;
+}
+
+.trust-avatar:first-child {
+  margin-left: 0;
+}
+
+
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <!-- Navbar -->
+     <nav style="background:#5b21b6; padding:14px 0;">
+  <div class="container d-flex justify-content-between align-items-center">
+
+    <!-- Logo -->
+    <a href="{% url 'home' %}"
+       style="color:white; font-weight:700; font-size:20px; text-decoration:none;">
+      VCS Careers
+    </a>
+
+    <!-- Links -->
+   <!-- Links -->
+<div class="d-flex align-items-center" style="gap:20px;">
+
+  <a href="{% url 'home' %}" style="color:white; text-decoration:none;">
+    Home
+  </a>
+
+  <a href="{% url 'job-list' %}" style="color:white; text-decoration:none;">
+    Jobs
+  </a>
+
+  {% if user.is_authenticated %}
+
+    <a href="{% url 'dashboard' %}" style="color:white; text-decoration:none;">
+      Dashboard
+    </a>
+
+    <a href="{% url 'subscription' %}" style="color:white; text-decoration:none;">
+      Subscription
+    </a>
+
+    {% if not user.is_staff %}
+    <a href="{% url 'profile' %}" style="color:white; text-decoration:none;">
+      Profile
+    </a>
+    {% endif %}
+
+    <a href="{% url 'logout' %}"
+       style="background:white;color:#5b21b6;padding:8px 14px;border-radius:8px;text-decoration:none;">
+      Logout
+    </a>
+
+  {% else %}
+
+    <a href="{% url 'login' %}" style="color:white; text-decoration:none;">
+      Login
+    </a>
+
+    <a href="{% url 'register' %}"
+       style="background:white;color:#5b21b6;padding:8px 14px;border-radius:8px;text-decoration:none;">
+      Register
+    </a>
+
+  {% endif %}
+</div>
+
+
+  </div>
+</nav>
+
+
+      <!-- Page content -->
+      <div class="content">
+        <div class="page-container">
+          <div class="container mt-3">
+{% if messages %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  {% for message in messages %}
+    Swal.fire({
+      icon: "{% if message.tags == 'error' %}error{% else %}success{% endif %}",
+      title: "{{ message|escapejs }}",
+      confirmButtonColor: "#7c3aed",
+      backdrop: "rgba(124,58,237,0.15)"
+    });
+  {% endfor %}
+});
+</script>
+{% endif %}
+
+
+
+</div>
+
+          {% block content %} {% endblock %}</div>
+      </div>
+
+      <!-- Footer -->
+      <footer style="background:#4c1d95; color:white; margin-top:60px;">
+  <div class="container py-5">
+
+    <!-- Newsletter -->
+    <div class="text-center mb-5">
+      <h5 class="fw-bold">Subscribe to career updates</h5>
+      <p style="color:#ddd;">Get job alerts and career tips</p>
+
+      <div class="d-flex justify-content-center">
+
+        <form method="POST" action="{% url 'subscribe_newsletter' %}" class="d-flex" style="max-width:420px; width:100%;">
+  {% csrf_token %}
+  <input name="email" type="email" class="form-control me-2" placeholder="Enter email" required>
+  <button type="submit" class="btn btn-light">Subscribe</button>
+</form>
+
+
+      </div>
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,0.2);">
+
+    <!-- Footer link rows -->
+    <div class="row text-center mt-4">
+
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold">VCS Careers</h6>
+        <p style="color:#ddd;">
+          Digital career services platform helping professionals grow.
+        </p>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold">Platform</h6>
+        <div class="d-flex flex-column">
+          <a href="{% url 'home' %}" style="color:#ddd; text-decoration:none;">Home</a>
+          <a href="{% url 'job-list' %}" style="color:#ddd; text-decoration:none;">Jobs</a>
+          <a href="{% url 'dashboard' %}" style="color:#ddd; text-decoration:none;">Dashboard</a>
+          <a href="{% url 'profile' %}" style="color:#ddd; text-decoration:none;">Profile</a>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold">Services</h6>
+        <div class="d-flex flex-column">
+          <span style="color:#ddd;">AI Resume Optimizer</span>
+          <span style="color:#ddd;">Consultant Support</span>
+          <span style="color:#ddd;">Career Guidance</span>
+          <span style="color:#ddd;">Pro Membership</span>
+        </div>
+      </div>
+
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold">Support</h6>
+        <div class="d-flex flex-column">
+          <span style="color:#ddd;">Help Center</span>
+          <span style="color:#ddd;">Contact Us</span>
+          <span style="color:#ddd;">Privacy Policy</span>
+          <span style="color:#ddd;">Terms of Service</span>
+        </div>
+      </div>
+
+    </div>
+
+    <hr style="border-color:rgba(255,255,255,0.2);">
+
+    <!-- Social icons centered -->
+    <div class="text-center mb-3">
+      <div class="d-flex justify-content-center gap-4">
+        <i class="bi bi-linkedin fs-4"></i>
+        <i class="bi bi-twitter fs-4"></i>
+        <i class="bi bi-facebook fs-4"></i>
+        <i class="bi bi-instagram fs-4"></i>
+      </div>
+    </div>
+
+    <!-- Copyright -->
+    <div class="text-center small">
+      © 2026 VCS Digital Career Services
+    </div>
+
+  </div>
+</footer>
+
+    </div>
+  </body>
+</html>

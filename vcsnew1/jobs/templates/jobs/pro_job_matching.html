@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block title %}Job Matches{% endblock %}
+
+{% block content %}
+<h2 style="color:#1e3a8a;">Your Job Matches</h2>
+
+{% if matched_jobs %}
+  {% for item in matched_jobs %}
+    <div class="card" style="margin-bottom:16px;">
+      <h3>{{ item.job.title }} – {{ item.job.company }}</h3>
+      <p><strong>Location:</strong> {{ item.job.location }}</p>
+
+      <div style="background:#e5e7eb; border-radius:6px; height:12px;">
+        <div style="
+          width:{{ item.match_percentage }}%;
+          background:#16a34a;
+          height:100%;
+          border-radius:6px;">
+        </div>
+      </div>
+
+      <p style="margin-top:8px;">
+        Match Score: <strong>{{ item.match_percentage }}%</strong>
+      </p>
+
+      <p style="font-size:14px; color:#374151;">
+        Matching skills:
+        {{ item.matched_skills|join:", " }}
+      </p>
+
+      <a href="{% url 'job-detail' item.job.id %}">View Job</a>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No matching jobs found yet. Update your skills for better matches.</p>
+{% endif %}
+{% endblock %}
