@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}VTS Training Courses | VCS Careers{% endblock %}
+
+{% block content %}
+<h1 style="color:#1e3a8a;">VTS Training Courses</h1>
+
+<div class="grid">
+  {% for course in courses %}
+  <div class="card">
+    <h3>{{ course.title }}</h3>
+    <p>{{ course.description }}</p>
+    
+    {% if user_progress|get_item:course.id %}
+      <p>Progress: {{ user_progress|get_item:course.id }}%</p>
+    {% else %}
+      <p>Progress: 0%</p>
+    {% endif %}
+    
+    {% if course.video_url %}
+      <a href="{{ course.video_url }}" target="_blank">Start Course</a>
+    {% endif %}
+  </div>
+  {% empty %}
+  <p>No courses available yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

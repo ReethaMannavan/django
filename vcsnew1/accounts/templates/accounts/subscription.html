@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% block title %}Subscription{% endblock %}
+
+{% block content %}
+
+<div class="pricing-section">
+
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Choose Your Plan</h2>
+    <p class="text-muted">Simple pricing for your career growth</p>
+  </div>
+
+  <div class="row g-4">
+
+    <!-- FREE -->
+    <div class="col-md-4 d-flex">
+      <div class="glass-card w-100">
+        <h5>Free</h5>
+        <div class="price">₹0</div>
+
+        <ul class="features">
+          <li>✔ 20 job applications/month</li>
+          <li>✔ Resume upload</li>
+          <li>✔ Profile dashboard</li>
+        </ul>
+
+        {% if user.subscription_tier == "free" %}
+          <span class="badge bg-success">Current Plan</span>
+
+        {% elif user.subscription_tier == "pro" or user.subscription_tier == "pro_plus" %}
+          <a href="{% url 'downgrade-free' %}" class="btn btn-light w-100">
+            Downgrade
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- PRO -->
+    <div class="col-md-4 d-flex">
+      <div class="glass-card pro w-100">
+        <h5>Pro</h5>
+        <div class="price">₹999<span>/month</span></div>
+
+        <ul class="features">
+          <li>✔ 100 job applications</li>
+          <li>✔ AI Resume Optimization</li>
+          <li>✔ AI Chatbot</li>
+          <li>✔ Consultant session</li>
+        </ul>
+
+        {% if user.subscription_tier == "pro" %}
+          <span class="badge bg-success">Current Plan</span>
+
+        {% elif user.subscription_tier == "free" %}
+          <button onclick="openPayment('Pro Plan','₹999','{% url 'upgrade-pro' %}')"
+                  class="btn btn-primary w-100">
+            Upgrade
+          </button>
+
+        {% elif user.subscription_tier == "pro_plus" %}
+          <a href="{% url 'downgrade-pro' %}" class="btn btn-light w-100">
+            Downgrade
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- PRO PLUS -->
+    <div class="col-md-4 d-flex">
+      <div class="glass-card w-100">
+        <h5>Pro Plus</h5>
+        <div class="price">₹29,999<span>/year</span></div>
+
+        <ul class="features">
+          <li>✔ Unlimited applications</li>
+          <li>✔ Mock interviews</li>
+          <li>✔ Dedicated consultant</li>
+          <li>✔ VTS training</li>
+        </ul>
+
+        {% if user.subscription_tier == "pro_plus" %}
+          <span class="badge bg-success">Current Plan</span>
+
+        {% else %}
+          <button onclick="openPayment('Pro Plus','₹29,999','{% url 'upgrade-proplus' %}')"
+                  class="btn btn-dark w-100">
+            Upgrade
+          </button>
+        {% endif %}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- PAYMENT MODAL -->
+<div class="modal fade" id="paymentModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content payment-modal">
+
+      <div class="modal-header border-0">
+        <h5 class="fw-bold">Complete Payment</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        <div class="payment-plan">
+          <div id="planName">Plan</div>
+          <div id="planPrice">₹0</div>
+        </div>
+
+        <label class="mt-3">Card Number</label>
+        <input class="form-control mb-2" placeholder="1234 5678 9012 3456">
+
+        <div class="row">
+          <div class="col">
+            <label>Expiry</label>
+            <input class="form-control" placeholder="MM/YY">
+          </div>
+          <div class="col">
+            <label>CVV</label>
+            <input class="form-control" placeholder="123">
+          </div>
+        </div>
+
+        <button onclick="completePayment()" class="btn btn-primary w-100 mt-4">
+          Pay Now
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openPayment(plan, price, url) {
+  document.getElementById("planName").innerText = plan;
+  document.getElementById("planPrice").innerText = price;
+  window.paymentRedirect = url;
+  new bootstrap.Modal(document.getElementById("paymentModal")).show();
+}
+
+function completePayment() {
+  window.location.href = window.paymentRedirect;
+}
+</script>
+
+<style>
+.pricing-section { padding:60px 30px; background:#f8fafc; }
+.glass-card { border-radius:22px; padding:36px 28px; color:#fff; text-align:center;
+  box-shadow:0 25px 50px rgba(0,0,0,0.15); display:flex; flex-direction:column; justify-content:space-between; }
+.glass-card:hover { transform:translateY(-10px); box-shadow:0 35px 70px rgba(0,0,0,0.2); }
+.glass-card h5 { background:rgba(255,255,255,0.9); color:#111; padding:6px 18px; border-radius:999px; font-weight:700; margin-bottom:24px; }
+.price { font-size:42px; font-weight:800; }
+.features { list-style:none; padding:0; margin:28px 0; text-align:left; }
+.glass-card { background:linear-gradient(180deg,#ff7a8a,#ffb36b); }
+.glass-card.pro { background:linear-gradient(180deg,#8bc34a,#dce775); }
+.glass-card:last-child { background:linear-gradient(180deg,#4fc3f7,#ce93d8); }
+.payment-modal { border-radius:20px; }
+.payment-plan { background:#f3e8ff; border-radius:14px; padding:16px; text-align:center; }
+#planName { font-weight:700; color:#5b21b6; }
+#planPrice { font-size:28px; font-weight:800; }
+</style>
+
+{% endblock %}

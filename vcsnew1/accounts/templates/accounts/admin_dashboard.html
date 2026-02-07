@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="admin-wrapper">
+
+  <div class="admin-header">
+    <h1>Admin Dashboard</h1>
+    <p>Manage the VCS Digital Career Services platform.</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="card admin-card">
+      <div class="icon"><i class="bi bi-briefcase"></i></div>
+      <h3>Manage Jobs</h3>
+      <p>Create, edit, and delete job postings.</p>
+      <a href="{% url 'admin-job-list' %}">Manage Jobs</a>
+    </div>
+
+    <div class="card admin-card">
+      <div class="icon"><i class="bi bi-file-earmark-text"></i></div>
+      <h3>Applications</h3>
+      <p>View all candidate applications.</p>
+      <a href="{% url 'admin-applications' %}">View Applications</a>
+    </div>
+
+    <div class="card admin-card">
+      <div class="icon"><i class="bi bi-people"></i></div>
+      <h3>Analytics</h3>
+      <p>View Free and Pro users.</p>
+      <a href="{% url 'admin-analytics' %}">Analytics</a>
+    </div>
+
+    <div class="card admin-card">
+      <div class="icon"><i class="bi bi-chat-dots"></i></div>
+      <h3>Consultant Requests</h3>
+      <p>View and manage Pro user consultant requests.</p>
+      <a href="{% url 'admin-consultant-requests' %}">View Requests</a>
+    </div>
+
+  </div>
+
+</div>
+
+<style>
+/* Admin dashboard container */
+.admin-wrapper{
+  padding: 10px;
+}
+
+/* Header */
+.admin-header{
+  background: linear-gradient(135deg,#5b21b6,#7c3aed);
+  color:white;
+  padding:30px;
+  border-radius:14px;
+  margin-bottom:30px;
+}
+
+.admin-header h1{
+  margin:0;
+  font-weight:700;
+}
+
+.admin-header p{
+  opacity:0.9;
+  margin-top:6px;
+}
+
+/* Cards */
+.admin-card{
+  position:relative;
+  background:white;
+  border-radius:14px;
+  border:1px solid #eee;
+  box-shadow:0 8px 20px rgba(0,0,0,0.05);
+  transition:0.2s;
+}
+
+.admin-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 16px 35px rgba(124,58,237,0.2);
+}
+
+/* Icon circle */
+.admin-card .icon{
+  width:44px;
+  height:44px;
+  border-radius:10px;
+  background:#f3e8ff;
+  color:#6d28d9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+/* Button */
+.admin-card a{
+  background:linear-gradient(135deg,#5b21b6,#7c3aed);
+  border-radius:8px;
+  padding:10px;
+  color:white;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.admin-card a:hover{
+  opacity:0.9;
+}
+</style>
+
+{% endblock %}
