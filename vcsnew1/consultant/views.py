@@ -1,21 +1,48 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import ConsultantRequest
+from django.contrib import messages
+from django.utils.timezone import now
 
 @login_required
 def request_consultant(request):
+    user = request.user
+
+    if user.subscription_tier not in ['pro', 'pro_plus']:
+        return redirect('subscription')
+
+    # -------- Monthly consultant quota --------
+    if user.subscription_tier == "pro":
+        limit = 1
+    else:
+        limit = 4
+
+    monthly_count = ConsultantRequest.objects.filter(
+        user=user,
+        created_at__year=now().year,
+        created_at__month=now().month
+    ).count()
+
+    if monthly_count >= limit:
+        messages.error(request, "You’ve reached your monthly consultant session limit.")
+        return redirect('dashboard')
+
+    # ------------------------------------------
+
     if request.method == 'POST':
         purpose = request.POST.get('purpose')
         message = request.POST.get('message')
 
         ConsultantRequest.objects.create(
-            user=request.user,
+            user=user,
             purpose=purpose,
             message=message
         )
+        messages.success(request, "Consultant session requested successfully.")
         return redirect('dashboard')
 
     return render(request, 'consultant/request_consultant.html')
+
 
 
 

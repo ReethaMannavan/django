@@ -91,6 +91,11 @@ def logout_view(request):
 
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+from django.utils.timezone import now
+from jobs.models import JobApplication
+from consultant.models import ConsultantRequest
+
+
 
 @login_required(login_url='login')
 def dashboard_view(request):
@@ -100,8 +105,61 @@ def dashboard_view(request):
     if user.is_staff or user.is_superuser:
         return render(request, 'accounts/admin_dashboard.html', {'user': user})
 
-    # Candidate Dashboard (Free / Pro / Pro Plus)
-    return render(request, 'accounts/dashboard.html', {'user': user})
+    # ---------------- SUBSCRIPTION EXPIRY CHECK ----------------
+    if user.subscription_expiry:
+        if user.subscription_expiry and user.subscription_expiry <= now().date():
+
+            if user.pending_downgrade:
+                user.subscription_tier = user.pending_downgrade
+                user.pending_downgrade = None
+                user.subscription_expiry = None
+                user.save()
+
+    # ---------------- Application usage tracking ----------------
+    month_count = JobApplication.objects.filter(
+        candidate=user,
+        applied_at__year=now().year,
+        applied_at__month=now().month
+    ).count()
+
+    if user.subscription_tier == "free":
+        limit = 20
+    elif user.subscription_tier == "pro":
+        limit = 100
+    else:
+        limit = None
+
+    remaining = None if limit is None else max(limit - month_count, 0)
+
+    # ---------------- Consultant usage tracking ----------------
+    consultant_count = ConsultantRequest.objects.filter(
+    user=user,
+    created_at__year=now().year,
+    created_at__month=now().month
+    ).count()
+
+    if user.subscription_tier == "pro":
+        consultant_limit = 1
+    elif user.subscription_tier == "pro_plus":
+        consultant_limit = 4
+    else:
+        consultant_limit = 0
+
+    consultant_remaining = max(consultant_limit - consultant_count, 0)
+
+    
+
+    return render(request, 'accounts/dashboard.html', {
+        'user': user,
+        'month_count': month_count,
+        'limit': limit,
+        'remaining': remaining,
+        'consultant_count': consultant_count,
+        'consultant_limit': consultant_limit,
+        'consultant_remaining': consultant_remaining,
+    })
+
+
 
 
 
@@ -287,9 +345,6 @@ def downgrade_pro(request):
 
 
 
-
-
-
 #subscription
 from django.contrib.auth.decorators import login_required
 
@@ -300,3 +355,145 @@ def subscription_view(request):
 
 
 
+
+# ---------------- Resume Optimization ----------------
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.utils.timezone import now
+from .models import ResumeOptimization
+
+from groq import Groq
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
+
+
+@login_required
+def resume_optimizer(request):
+    user = request.user
+
+    if user.subscription_tier == "free":
+        messages.error(request, "Resume optimization is available for Pro users.")
+        return redirect("subscription")
+
+    month_count = ResumeOptimization.objects.filter(
+        user=user,
+        created_at__year=now().year,
+        created_at__month=now().month
+    ).count()
+
+    limit = 3 if user.subscription_tier == "pro" else 20
+    remaining = max(limit - month_count, 0)
+
+    ai_result = None
+    optimized_resume = None
+
+    if request.method == "POST":
+
+        if month_count >= limit:
+            messages.error(request, "Monthly resume optimization quota reached.")
+            return redirect("resume-optimizer")
+
+        resume_text = request.POST.get("resume_text")
+        job_desc = request.POST.get("job_desc")
+
+        if "resume_file" in request.FILES:
+            uploaded_file = request.FILES["resume_file"]
+            resume_text = uploaded_file.read().decode("utf-8", errors="ignore")
+
+        if not resume_text:
+            messages.error(request, "Please paste or upload a resume.")
+            return redirect("resume-optimizer")
+
+        resume_text = resume_text[:3000]
+        job_desc = (job_desc or "")[:3000]
+
+        response = client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": "You are an ATS resume optimization engine."},
+                {
+                    "role": "user",
+                    "content": f"""
+Optimize the resume below for ATS compatibility.
+
+RESUME:
+{resume_text}
+
+JOB DESCRIPTION:
+{job_desc}
+
+Return output in this format:
+
+ATS SCORE:
+Give a score out of 100.
+
+MISSING KEYWORDS:
+(list)
+
+IMPROVEMENTS:
+(list)
+
+OPTIMIZED RESUME:
+Write a complete ATS-ready resume using the improved content.
+"""
+                }
+            ],
+            model="openai/gpt-oss-20b"
+        )
+
+        ai_result = response.choices[0].message.content
+
+        # ✅ Correct extraction
+        if ai_result and "OPTIMIZED RESUME" in ai_result:
+            optimized_resume = ai_result.split("OPTIMIZED RESUME", 1)[1].strip()
+
+        ResumeOptimization.objects.create(user=user)
+
+        month_count += 1
+        remaining = max(limit - month_count, 0)
+
+    return render(request, "accounts/resume_optimizer.html", {
+        "month_count": month_count,
+        "limit": limit,
+        "remaining": remaining,
+        "ai_result": ai_result,
+        "optimized_resume": optimized_resume,
+    })
+
+
+
+
+
+#pdfresume
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+import io
+
+
+def download_optimized_resume_pdf(request):
+    data = request.GET.get("data", "")
+
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=letter)
+
+    styles = getSampleStyleSheet()
+    normal_style = styles["Normal"]
+
+    elements = []
+
+    for line in data.split("\n"):
+        elements.append(Paragraph(line, normal_style))
+        elements.append(Spacer(1, 8))
+
+    doc.build(elements)
+    buffer.seek(0)
+
+    response = HttpResponse(buffer, content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="optimized_resume.pdf"'
+
+    return response

@@ -3,11 +3,37 @@
 
 {% block content %}
 <div class="container py-4">
-  <h1 class="text-primary fw-bold mb-4">Welcome, {{ user.username }}!</h1>
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="text-primary fw-bold m-0">
+    Welcome, {{ user.username }}!
+    <span class="badge bg-purple ms-2">
+      {{ user.subscription_tier|upper }}
+    </span>
+  </h1>
+
+  <div class="text-end small text-muted">
+    {% if user.subscription_expiry %}
+      <div>
+        Renews:
+        <strong>{{ user.subscription_expiry }}</strong>
+      </div>
+    {% endif %}
+
+    {% if user.pending_downgrade %}
+      <div class="text-warning">
+        Downgrade → {{ user.pending_downgrade|upper }} scheduled
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+
 
   <div class="row g-4">
     <!-- ------------------ Free User ------------------ -->
-    {% if user.role == 'free' %}
+    {% if user.subscription_tier == 'free' %}
+
 
     <div class="col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
@@ -52,6 +78,59 @@
         </div>
       </div>
     </div>
+
+    <div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">Monthly Application Usage</h5>
+      <p class="text-secondary small">
+        Track your application quota for this month.
+      </p>
+
+      {% if limit %}
+        <div class="progress mb-2">
+          <div class="progress-bar bg-primary"
+               style="width: {% widthratio month_count limit 100 %}%;">
+            {{ month_count }}/{{ limit }}
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between small text-muted">
+          <span>Used: <strong>{{ month_count }}</strong></span>
+          <span>Remaining: <strong>{{ remaining }}</strong></span>
+        </div>
+      {% else %}
+        <div class="alert alert-success mb-0">
+          Unlimited applications available (Pro Plus)
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">Consultant Sessions</h5>
+
+      {% if consultant_limit > 0 %}
+        <p class="text-secondary small">
+          {{ consultant_count }} / {{ consultant_limit }} used this month
+        </p>
+        <p class="small text-muted">
+          Remaining: {{ consultant_remaining }}
+        </p>
+      {% else %}
+        <p class="text-muted small">
+          Consultant sessions available for Pro users.
+        </p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
 
     <div class="col-md-6 col-lg-4">
       <div class="card shadow-sm h-100 border-primary">
@@ -113,8 +192,9 @@
 
     {% endif %}
 
-    <!-- ------------------ Pro User ------------------ -->
-    {% if user.role == 'pro' %}
+    <!-- ------------------ Pro User & pro plus------------------ -->
+  {% if user.subscription_tier == 'pro' or user.subscription_tier == 'pro_plus' %}
+
 
     <div class="col-md-6 col-lg-4">
       <div class="card shadow-sm h-100">
@@ -185,7 +265,8 @@
     {% endif %}
 
     <!-- ------------------ Admin User ------------------ -->
-    {% if user.role == 'admin' or user.is_superuser %}
+   {% if user.is_staff or user.is_superuser %}
+
     <div class="col-md-6 col-lg-3">
       <div class="card shadow-sm h-100">
         <div class="card-body">

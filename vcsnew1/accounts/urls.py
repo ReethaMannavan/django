@@ -28,11 +28,18 @@ path('upgrade/proplus/', views.upgrade_to_proplus, name='upgrade-proplus'),
 path('downgrade/free/', views.downgrade_free, name='downgrade-free'),
 path('downgrade/pro/', views.downgrade_pro, name='downgrade-pro'),
 
-
-
-
 #subscription
 path('subscription/', views.subscription_view, name='subscription'),
+
+#resumeoptimization
+path("resume-optimizer/", views.resume_optimizer, name="resume-optimizer"),
+path(
+    "download-resume-pdf/",
+    views.download_optimized_resume_pdf,
+    name="download-optimized-resume-pdf",
+),
+
+
 
 
 
