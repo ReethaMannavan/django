@@ -20,7 +20,8 @@ class AdminRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('login')
-        if not (request.user.is_superuser or request.user.role == 'admin'):
+        if not (request.user.is_superuser or request.user.is_staff):
+
             messages.error(request, "Admin access only.")
             return redirect('dashboard')
         return super().dispatch(request, *args, **kwargs)
@@ -69,7 +70,8 @@ class AdminApplicationListView(LoginRequiredMixin, UserPassesTestMixin, View):
 
     def test_func(self):
         user = self.request.user
-        return user.is_superuser or user.role == 'admin'
+        return user.is_superuser or user.is_staff
+
 
     def handle_no_permission(self):
         messages.error(self.request, "Admin access only.")
@@ -262,9 +264,13 @@ class ApplyJobView(View):
 
         user = request.user
 
+        if JobApplication.objects.filter(job=job, candidate=user).exists():
+            messages.warning(request, "You already applied for this job.")
+            return redirect("job-detail", pk=pk)
+
         # ---------------- Subscription Quota Check ----------------
         if user.subscription_tier == "free":
-            limit = 1
+            limit = 20
         elif user.subscription_tier == "pro":
             limit = 100
         else:
@@ -369,7 +375,8 @@ class ProJobMatchingView(View):
         user = request.user
 
         # 🚫 Block free users
-        if user.role != 'pro':
+        if user.subscription_tier not in ['pro', 'pro_plus']:
+
             return render(request, 'jobs/pro_upgrade_required.html')
 
         try:
