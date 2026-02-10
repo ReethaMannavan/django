@@ -93,8 +93,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.timezone import now
 from jobs.models import JobApplication
-from consultant.models import ConsultantRequest
-
+from consultant.models import ConsultantRequest, MockInterview
 
 
 @login_required(login_url='login')
@@ -133,9 +132,9 @@ def dashboard_view(request):
 
     # ---------------- Consultant usage tracking ----------------
     consultant_count = ConsultantRequest.objects.filter(
-    user=user,
-    created_at__year=now().year,
-    created_at__month=now().month
+        user=user,
+        created_at__year=now().year,
+        created_at__month=now().month
     ).count()
 
     if user.subscription_tier == "pro":
@@ -147,7 +146,19 @@ def dashboard_view(request):
 
     consultant_remaining = max(consultant_limit - consultant_count, 0)
 
-    
+    # ---------------- Mock interview usage tracking ----------------
+    mock_count = MockInterview.objects.filter(
+        user=user,
+        scheduled_at__year=now().year,
+        scheduled_at__month=now().month
+    ).count()
+
+    if user.subscription_tier == "pro_plus":
+        mock_limit = 4
+    else:
+        mock_limit = 0
+
+    mock_remaining = max(mock_limit - mock_count, 0)
 
     return render(request, 'accounts/dashboard.html', {
         'user': user,
@@ -157,8 +168,11 @@ def dashboard_view(request):
         'consultant_count': consultant_count,
         'consultant_limit': consultant_limit,
         'consultant_remaining': consultant_remaining,
-    })
 
+        'mock_count': mock_count,
+        'mock_limit': mock_limit,
+        'mock_remaining': mock_remaining,
+    })
 
 
 
@@ -248,38 +262,122 @@ def pro_feature_placeholder(request):
 
 
 
+# from django.contrib.auth import get_user_model
+# from django.shortcuts import render, redirect
+# from jobs.models import Job, JobApplication, SavedJob
+
+# User = get_user_model()
+
+# def admin_analytics(request):
+    
+#     if not request.user.is_authenticated or (not request.user.is_superuser and request.user.role != 'admin'):
+#         return redirect('dashboard')
+
+#     total_users = User.objects.count()
+#     free_users = User.objects.filter(subscription_tier='free').count()
+#     pro_users = User.objects.filter(subscription_tier='pro').count()
+#     pro_plus_users = User.objects.filter(subscription_tier='pro_plus').count()
+
+#     conversion_rate = round((pro_users / total_users * 100), 1) if total_users else 0
+
+#     total_jobs = Job.objects.count()
+#     total_applications = JobApplication.objects.count()
+#     total_saved_jobs = SavedJob.objects.count()
+
+#     context = {
+#         'total_users': total_users,
+#         'free_users': free_users,
+#         'pro_users': pro_users,
+#         'conversion_rate': conversion_rate,
+#         'total_jobs': total_jobs,
+#         'total_applications': total_applications,
+#         'total_saved_jobs': total_saved_jobs,
+#     }
+#     return render(request, 'accounts/admin_analytics.html', context)
+
 from django.contrib.auth import get_user_model
 from django.shortcuts import render, redirect
+from django.utils.timezone import now
+
 from jobs.models import Job, JobApplication, SavedJob
+from consultant.models import ConsultantRequest, MockInterview
 
 User = get_user_model()
 
-def admin_analytics(request):
-    # Only admin users allowed
-    if not request.user.is_authenticated or (not request.user.is_superuser and request.user.role != 'admin'):
-        return redirect('dashboard')
 
+def admin_analytics(request):
+    if not request.user.is_authenticated or (
+        not request.user.is_superuser and request.user.role != "admin"
+    ):
+        return redirect("dashboard")
+
+    # ---------------- USER METRICS ----------------
     total_users = User.objects.count()
-    free_users = User.objects.filter(subscription_tier='free').count()
-    pro_users = User.objects.filter(subscription_tier='pro').count()
-    pro_plus_users = User.objects.filter(subscription_tier='pro_plus').count()
+    free_users = User.objects.filter(subscription_tier="free").count()
+    pro_users = User.objects.filter(subscription_tier="pro").count()
+    pro_plus_users = User.objects.filter(subscription_tier="pro_plus").count()
 
     conversion_rate = round((pro_users / total_users * 100), 1) if total_users else 0
 
+    # ---------------- JOB METRICS ----------------
     total_jobs = Job.objects.count()
     total_applications = JobApplication.objects.count()
     total_saved_jobs = SavedJob.objects.count()
 
+    # ---------------- MONTHLY USAGE ----------------
+    current_month = now().month
+    current_year = now().year
+
+    monthly_applications = JobApplication.objects.filter(
+        applied_at__month=current_month,
+        applied_at__year=current_year
+    ).count()
+
+    monthly_mock_interviews = MockInterview.objects.filter(
+        created_at__month=current_month,
+        created_at__year=current_year
+    ).count()
+
+    monthly_consultant_sessions = ConsultantRequest.objects.filter(
+        created_at__month=current_month,
+        created_at__year=current_year
+    ).count()
+
+    # ---------------- CONSULTANT UTILIZATION ----------------
+    total_consultant_requests = ConsultantRequest.objects.count()
+    total_mock_interviews = MockInterview.objects.count()
+
+    # ---------------- SLA METRICS ----------------
+    completed_requests = ConsultantRequest.objects.filter(status="completed").count()
+
+    sla_compliance = round(
+        (completed_requests / total_consultant_requests * 100), 1
+    ) if total_consultant_requests else 0
+
+    # ---------------- REVENUE ESTIMATE ----------------
+    estimated_revenue = (pro_users * 999) + (pro_plus_users * 29999)
+
     context = {
-        'total_users': total_users,
-        'free_users': free_users,
-        'pro_users': pro_users,
-        'conversion_rate': conversion_rate,
-        'total_jobs': total_jobs,
-        'total_applications': total_applications,
-        'total_saved_jobs': total_saved_jobs,
+        "total_users": total_users,
+        "free_users": free_users,
+        "pro_users": pro_users,
+        "pro_plus_users": pro_plus_users,
+        "conversion_rate": conversion_rate,
+        "total_jobs": total_jobs,
+        "total_applications": total_applications,
+        "total_saved_jobs": total_saved_jobs,
+        "monthly_applications": monthly_applications,
+        "monthly_mock_interviews": monthly_mock_interviews,
+        "monthly_consultant_sessions": monthly_consultant_sessions,
+        "total_consultant_requests": total_consultant_requests,
+        "total_mock_interviews": total_mock_interviews,
+        "sla_compliance": sla_compliance,
+        "estimated_revenue": estimated_revenue,
     }
-    return render(request, 'accounts/admin_analytics.html', context)
+
+    return render(request, "accounts/admin_analytics.html", context)
+
+
 
 
 
@@ -289,6 +387,8 @@ from django.contrib.auth.decorators import login_required
 
 from django.utils import timezone
 from datetime import timedelta
+from .models import Invoice
+
 
 @login_required
 def upgrade_to_pro(request):
@@ -298,6 +398,12 @@ def upgrade_to_pro(request):
     user.subscription_expiry = timezone.now().date() + timedelta(days=30)
     user.pending_downgrade = None
     user.save()
+
+    Invoice.objects.create(
+        user=user,
+        plan="Pro",
+        amount=999
+    )
 
     messages.success(request, "Upgraded to Pro plan.")
     return redirect("dashboard")
@@ -312,6 +418,13 @@ def upgrade_to_proplus(request):
     user.subscription_expiry = timezone.now().date() + timedelta(days=365)
     user.pending_downgrade = None
     user.save()
+
+     # CREATE INVOICE
+    Invoice.objects.create(
+        user=user,
+        plan="Pro Plus",
+        amount=29999
+    )
 
     messages.success(request, "Upgraded to Pro Plus plan.")
     return redirect("dashboard")
@@ -497,3 +610,18 @@ def download_optimized_resume_pdf(request):
     response["Content-Disposition"] = 'attachment; filename="optimized_resume.pdf"'
 
     return response
+
+
+
+#invoice
+from django.contrib.auth.decorators import login_required
+from .models import Invoice
+
+
+@login_required
+def billing_history(request):
+    invoices = Invoice.objects.filter(user=request.user).order_by("-created_at")
+
+    return render(request, "accounts/billing_history.html", {
+        "invoices": invoices
+    })

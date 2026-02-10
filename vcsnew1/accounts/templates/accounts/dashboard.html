@@ -294,6 +294,35 @@
             Track Requests
           </a>
         </div>
+
+        <div class="col-md-3">
+  <a href="{% url 'billing-history' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     Billing History
+  </a>
+</div>
+
+
+        {% if user.subscription_tier == "pro_plus" %}
+<div class="col-md-3">
+  <a href="{% url 'schedule-mock' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     Mock Interview
+  </a>
+</div>
+
+<div class="col-md-3">
+  <a href="{% url 'my-mock-interviews' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     My Interviews
+  </a>
+</div>
+
+
+
+{% endif %}
+
+
       </div>
     </div>
   </div>

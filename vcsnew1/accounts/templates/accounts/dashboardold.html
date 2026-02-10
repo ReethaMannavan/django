@@ -110,25 +110,29 @@
 </div>
 
 <div class="col-md-6 col-lg-4">
-  <div class="card shadow-sm h-100">
-    <div class="card-body">
-      <h5 class="card-title">Consultant Sessions</h5>
+  <div class="card shadow-sm h-100 border-primary">
+    <div class="card-body text-center">
+      <h5 class="card-title text-primary">Upgrade Your Plan</h5>
 
-      {% if consultant_limit > 0 %}
-        <p class="text-secondary small">
-          {{ consultant_count }} / {{ consultant_limit }} used this month
-        </p>
-        <p class="small text-muted">
-          Remaining: {{ consultant_remaining }}
-        </p>
-      {% else %}
-        <p class="text-muted small">
-          Consultant sessions available for Pro users.
-        </p>
-      {% endif %}
+      <p class="text-secondary small">
+        Unlock AI tools, consultant sessions, and advanced job matching.
+      </p>
+
+      <ul class="list-unstyled small text-muted mb-3">
+        <li>✔ 100 applications/month</li>
+        <li>✔ AI Resume Optimization</li>
+        <li>✔ AI Chatbot access</li>
+        <li>✔ Consultant sessions</li>
+      </ul>
+
+      <a href="{% url 'subscription' %}" class="btn btn-primary btn-sm">
+        View Plans
+      </a>
     </div>
   </div>
 </div>
+
+
 
 
 
@@ -178,17 +182,7 @@
       </div>
     </div>
 
-    <div class="col-md-6 col-lg-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h5 class="card-title">Upgrade to Pro</h5>
-          <p class="text-secondary small">
-            Unlock AI resume optimization and advanced features.
-          </p>
-          <a href="#" class="btn btn-primary btn-sm">Upgrade Now</a>
-        </div>
-      </div>
-    </div>
+  
 
     {% endif %}
 
@@ -226,41 +220,86 @@
       </div>
     </div>
 
-    <div class="col-12">
-      <div class="card shadow-sm border-warning h-100">
-        <div class="card-body">
-          <h5 class="card-title text-warning">Pro Features 🔒</h5>
-          <p class="text-secondary small">
-            Access advanced tools: AI Resume, Job Matching, VTS Training, Chatbot.
-          </p>
 
-          <div id="proFeatures" class="row g-2 mt-2" style="display: none">
-            <div class="col-md-3">
-              <a href="{% url 'pro-feature' %}" class="btn btn-outline-primary w-100 btn-sm">AI Resume Optimizer</a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'pro-job-matching' %}" class="btn btn-outline-primary w-100 btn-sm">Job Matching</a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'pro-courses' %}" class="btn btn-outline-primary w-100 btn-sm">VTS Training</a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'pro-interview-chatbot' %}" class="btn btn-outline-primary w-100 btn-sm">AI Chatbot</a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'consultant-request' %}" class="btn btn-outline-primary w-100 btn-sm">Consultant Support</a>
-            </div>
-            <div class="col-md-3">
-              <a href="{% url 'my-consultant-requests' %}" class="btn btn-outline-secondary btn-sm w-100">Track Consultant Requests</a>
-            </div>
+    <div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">Monthly Application Usage</h5>
+
+      {% if limit %}
+        <div class="progress mb-2">
+          <div class="progress-bar bg-primary"
+               style="width: {% widthratio month_count limit 100 %}%;">
+
+            {{ month_count }}/{{ limit }}
           </div>
-
-          <button id="unlockBtn" onclick="openPaymentModal()" class="btn btn-warning btn-sm mt-3">
-            Unlock Pro Features
-          </button>
         </div>
+
+        <div class="small text-muted">
+          Remaining: {{ remaining }}
+        </div>
+      {% else %}
+        <div class="alert alert-success mb-0">
+          Unlimited applications available
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+    <div class="col-12">
+  <div class="card shadow-sm border-warning h-100">
+    <div class="card-body">
+      <h5 class="card-title text-warning">Pro Features</h5>
+      <p class="text-secondary small">
+        Access advanced tools available in your plan.
+      </p>
+
+      <div class="row g-2 mt-2">
+        <div class="col-md-3">
+          <a href="{% url 'resume-optimizer' %}"
+   class="btn btn-outline-primary w-100 btn-sm">
+   AI Resume Optimizer
+</a>
+
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'pro-job-matching' %}" class="btn btn-outline-primary w-100 btn-sm">
+            Job Matching
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'pro-courses' %}" class="btn btn-outline-primary w-100 btn-sm">
+            VTS Training
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'pro-interview-chatbot' %}" class="btn btn-outline-primary w-100 btn-sm">
+            AI Chatbot
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'consultant-request' %}" class="btn btn-outline-primary w-100 btn-sm">
+            Consultant Support
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'my-consultant-requests' %}" class="btn btn-outline-primary btn-sm w-100">
+            Track Requests
+          </a>
+        </div>
+
       </div>
     </div>
+  </div>
+</div>
+
 
     {% endif %}
 
@@ -306,68 +345,6 @@
   </div>
 </div>
 
-<!-- ------------------ Payment Modal ------------------>
-<div class="modal fade" id="paymentModal" tabindex="-1" aria-labelledby="paymentModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
-    <div class="modal-content rounded shadow">
-      <div class="modal-header bg-primary text-white">
-        <h5 class="modal-title" id="paymentModalLabel">Unlock Pro Features</h5>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-
-      <div class="modal-body text-center">
-        <p class="mb-3">
-          Unlock all Pro features for just <strong>₹1000</strong>!
-        </p>
-        <ul class="list-group text-start mb-3">
-          <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>AI Resume Optimizer</li>
-          <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>Advanced Job Matching</li>
-          <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>VTS Training</li>
-          <li class="list-group-item"><i class="bi bi-check-circle-fill text-success me-2"></i>AI Interview Chatbot</li>
-        </ul>
-        <button id="confirmUnlockBtn" style="width: 100%" class="btn btn-primary btn-lg">
-          Pay & Unlock
-        </button>
-      </div>
-
-      <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<script>
-  // Show the modal
-  function openPaymentModal() {
-    const modal = new bootstrap.Modal(document.getElementById("paymentModal"));
-    modal.show();
-  }
-
-  // Handle the unlock click
-  document.getElementById("confirmUnlockBtn")
-    ?.addEventListener("click", function () {
-      // Close the modal
-      const modalEl = document.getElementById("paymentModal");
-      const modal = bootstrap.Modal.getInstance(modalEl);
-      modal.hide();
-
-      // Show pro features
-      document.getElementById("proFeatures").style.display = "flex";
-      // Hide unlock button
-      document.getElementById("unlockBtn").style.display = "none";
-
-      // Optional success alert
-      const alertHtml = `
-      <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
-        🎉 Pro features unlocked successfully!
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>`;
-      document.querySelector(".container")?.insertAdjacentHTML("afterbegin", alertHtml);
-    });
-</script>
 
 <style>
   /* ===============================
@@ -528,21 +505,8 @@
     background:#ffffff;
   }
 
-  /* Unlock button */
-  #unlockBtn{
-    background:linear-gradient(135deg,#fbbf24,#f59e0b);
-    border:none;
-    color:#111827;
-    font-weight:900;
-  }
 
-  /* Modal */
-  .modal-content{
-    border-radius:18px;
-  }
-  .modal-header.bg-primary{
-    background: linear-gradient(135deg,#5b21b6,#7c3aed) !important;
-  }
+
 
   @media (max-width: 576px){
     .page-container{ padding: 14px; border-radius: 16px; }

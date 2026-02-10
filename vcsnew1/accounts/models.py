@@ -88,3 +88,37 @@ class ResumeOptimization(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.created_at}"
+
+
+
+#billing
+from django.conf import settings
+from django.db import models
+import uuid
+
+
+class Invoice(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="invoices"
+    )
+
+    invoice_number = models.CharField(
+        max_length=20,
+        unique=True,
+        editable=False
+    )
+
+    plan = models.CharField(max_length=50)
+    amount = models.DecimalField(max_digits=8, decimal_places=2)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if not self.invoice_number:
+            self.invoice_number = f"INV-{uuid.uuid4().hex[:8].upper()}"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.invoice_number

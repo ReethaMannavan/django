@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from .views import admin_analytics
+from .views import billing_history
+
 
 urlpatterns = [
     path('register/', views.register_view, name='register'),
@@ -40,6 +42,8 @@ path(
 ),
 
 
+#billing
+path("billing/", billing_history, name="billing-history"),
 
 
 
