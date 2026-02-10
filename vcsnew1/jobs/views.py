@@ -431,6 +431,9 @@ class ProJobMatchingView(View):
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.utils.timezone import now
+from .models import ChatbotUsage
+
 from groq import Groq
 
 import os
@@ -445,37 +448,84 @@ client = Groq(api_key=GROQ_API_KEY)
 
 @login_required
 def pro_interview_chatbot(request):
-    """
-    Renders the chatbot page.
-    """
-    return render(request, 'jobs/pro_interview_chatbot.html')
+    if request.user.subscription_tier == "free":
+        return redirect("subscription")
+
+    user = request.user
+
+    chatbot_count = ChatbotUsage.objects.filter(
+        user=user,
+        created_at__year=now().year,
+        created_at__month=now().month
+    ).count()
+
+    if user.subscription_tier == "pro":
+        chatbot_limit = 250
+    else:
+        chatbot_limit = None  # Pro Plus unlimited
+
+    chatbot_remaining = (
+        None if chatbot_limit is None else max(chatbot_limit - chatbot_count, 0)
+    )
+
+    return render(request, 'jobs/pro_interview_chatbot.html', {
+        "chatbot_count": chatbot_count,
+        "chatbot_limit": chatbot_limit,
+        "chatbot_remaining": chatbot_remaining,
+    })
+
+
 
 @login_required
 def pro_interview_chatbot_api(request):
-    """
-    Handles AJAX requests from the chatbot.
-    """
     if request.method == "POST":
+        user = request.user
+
+        # Block Free users
+        if user.subscription_tier == "free":
+            return JsonResponse({"answer": "AI chatbot is available for Pro users only."})
+
+        # -------- Monthly usage tracking --------
+        monthly_count = ChatbotUsage.objects.filter(
+            user=user,
+            created_at__year=now().year,
+            created_at__month=now().month
+        ).count()
+
+        if user.subscription_tier == "pro":
+            limit = 250
+        else:
+            limit = None  # Pro Plus unlimited
+
+        if limit is not None and monthly_count >= limit:
+            return JsonResponse({
+                "answer": "You’ve reached your monthly chatbot limit (250)."
+            })
+
         user_message = request.POST.get('message', '')
 
-        # Call Groq AI chat API
         try:
             response = client.chat.completions.create(
                 messages=[
                     {"role": "system", "content": "You are a helpful AI interviewer."},
                     {"role": "user", "content": user_message}
                 ],
-                model="openai/gpt-oss-20b"  # or another Groq model
+                model="openai/gpt-oss-20b"
             )
 
-            # Extract the answer
             answer = response.choices[0].message.content
-        except Exception as e:
+
+            # Track usage
+            ChatbotUsage.objects.create(user=user)
+
+        except Exception:
             answer = "Sorry, I couldn't generate a response."
 
         return JsonResponse({"answer": answer})
 
     return JsonResponse({"error": "Invalid request"}, status=400)
+
+
 
 
 

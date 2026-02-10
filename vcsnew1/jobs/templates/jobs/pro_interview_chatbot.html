@@ -3,8 +3,38 @@
 {% block title %}AI Interview Chatbot | VCS Careers{% endblock %}
 
 {% block content %}
-<h2>AI Interview Chatbot</h2>
+<h2 class="ai">AI Interview Chatbot</h2>
 <p>Ask questions about interview preparation, sample answers, and guidance.</p>
+
+
+<div class="card shadow-sm mb-3">
+  <div class="card-body d-flex justify-content-between align-items-center">
+
+    <div>
+      <h6 class="mb-1 fw-bold">AI Chatbot Usage</h6>
+
+      {% if chatbot_limit == None %}
+        <span class="badge bg-success">Pro Plus — Unlimited</span>
+      {% else %}
+        <div class="text-muted small">
+          {{ chatbot_count }} / {{ chatbot_limit }} messages used
+        </div>
+      {% endif %}
+    </div>
+
+    {% if chatbot_limit != None %}
+    <div class="text-end">
+      <div class="fw-bold text-primary" style="font-size:20px;">
+        {{ chatbot_remaining }}
+      </div>
+      <small class="text-muted">Remaining</small>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+
 
 <div id="chatBox" style="border:1px solid #e5e7eb; padding:10px; height:300px; overflow-y:auto; margin-bottom:10px;">
   <!-- Chat messages appear here -->
@@ -41,4 +71,14 @@ function sendMessage() {
     msgInput.value = '';
 }
 </script>
+
+<style>
+.card h6 {
+  color:#5b21b6;
+}
+.ai{
+    color:#5b21b6;
+}
+</style>
+
 {% endblock %}
