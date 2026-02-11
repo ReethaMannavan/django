@@ -238,11 +238,13 @@
       Dashboard
     </a>
 
+    
+
+    {% if not user.is_staff %}
+
     <a href="{% url 'subscription' %}" style="color:white; text-decoration:none;">
       Subscription
     </a>
-
-    {% if not user.is_staff %}
     <a href="{% url 'profile' %}" style="color:white; text-decoration:none;">
       Profile
     </a>
