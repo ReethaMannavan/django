@@ -102,6 +102,28 @@ def dashboard_view(request):
 
     # Admin Dashboard
     if user.is_staff or user.is_superuser:
+       
+        requests_qs = ConsultantRequest.objects.select_related("user").all()
+        queue_preview = []
+        
+        for req in requests_qs:
+            tier = req.user.subscription_tier
+            if tier == "pro_plus":
+                sla_hours = 2
+                priority = 1
+            else:
+                sla_hours = 4
+                priority = 2
+            deadline = req.created_at + timedelta(hours=sla_hours)
+            queue_preview.append({
+            "req": req,
+            "priority": priority,
+            "deadline": deadline
+        })
+        queue_preview.sort(key=lambda x: (x["priority"], x["req"].created_at))
+        queue_preview = queue_preview[:5]
+
+    
         return render(request, 'accounts/admin_dashboard.html', {'user': user})
 
     # ---------------- SUBSCRIPTION EXPIRY CHECK ----------------
@@ -584,24 +606,48 @@ Write a complete ATS-ready resume using the improved content.
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
-from reportlab.lib.styles import getSampleStyleSheet
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.units import inch
 import io
 
 
 def download_optimized_resume_pdf(request):
     data = request.GET.get("data", "")
+    username = request.user.username
 
     buffer = io.BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=letter)
 
     styles = getSampleStyleSheet()
+
+    title_style = ParagraphStyle(
+        name="Title",
+        fontSize=18,
+        spaceAfter=12,
+        alignment=1
+    )
+
+    section_style = ParagraphStyle(
+        name="Section",
+        fontSize=12,
+        spaceAfter=8,
+        spaceBefore=12
+    )
+
     normal_style = styles["Normal"]
 
     elements = []
 
+    # Header
+    elements.append(Paragraph("VCS Careers", title_style))
+    elements.append(Paragraph("AI Optimized Resume", section_style))
+    elements.append(Paragraph(f"Candidate: {username}", normal_style))
+    elements.append(Spacer(1, 20))
+
+    # Resume content
     for line in data.split("\n"):
         elements.append(Paragraph(line, normal_style))
-        elements.append(Spacer(1, 8))
+        elements.append(Spacer(1, 6))
 
     doc.build(elements)
     buffer.seek(0)
@@ -610,6 +656,7 @@ def download_optimized_resume_pdf(request):
     response["Content-Disposition"] = 'attachment; filename="optimized_resume.pdf"'
 
     return response
+
 
 
 
@@ -625,3 +672,24 @@ def billing_history(request):
     return render(request, "accounts/billing_history.html", {
         "invoices": invoices
     })
+
+
+#downloadinvoice
+from django.shortcuts import get_object_or_404
+from django.http import FileResponse
+from .utils import generate_invoice_pdf
+import os
+from django.conf import settings
+
+@login_required
+def download_invoice(request, invoice_id):
+    invoice = get_object_or_404(
+        Invoice,
+        id=invoice_id,
+        user=request.user
+    )
+
+    relative_path = generate_invoice_pdf(invoice)
+    filepath = os.path.join(settings.MEDIA_ROOT, relative_path)
+
+    return FileResponse(open(filepath, "rb"), as_attachment=True)

@@ -4,28 +4,52 @@
 {% block content %}
 <div class="container py-4">
 
-  <h2 class="fw-bold text-purple mb-3">AI Resume Optimizer</h2>
+  <!-- Header -->
+  <div class="optimizer-header mb-4">
+    <h2 class="fw-bold mb-1">AI Resume Optimizer</h2>
+    <div class="small opacity-75">Improve ATS score and tailor resumes using AI</div>
+  </div>
 
+  <!-- Usage Card -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
 
-      <div class="d-flex justify-content-between mb-3">
+      <div class="d-flex justify-content-between mb-2">
         <div>
           <strong>Monthly Usage</strong><br>
           {{ month_count }} / {{ limit }}
         </div>
-        <div class="text-success">
+        <div class="usage-pill">
           Remaining: {{ remaining }}
         </div>
       </div>
 
+      <div class="progress mb-2" style="height:10px;">
+        <div class="progress-bar bg-purple"
+             style="width:
+             {% if limit == 3 %}
+               {% if month_count == 0 %}0%
+               {% elif month_count == 1 %}33%
+               {% elif month_count == 2 %}66%
+               {% else %}100%{% endif %}
+             {% else %}0%{% endif %};">
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Form Card -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
       <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
 
-        <label class="fw-semibold">Upload Resume (optional)</label>
-        <input type="file" name="resume_file" class="form-control mb-3" accept=".txt,.doc,.docx,.pdf">
+        <label class="fw-semibold">Upload Resume</label>
+        <input type="file" name="resume_file" class="form-control mb-3">
 
-        <label class="fw-semibold">Paste Resume Text</label>
+        <label class="fw-semibold">Resume Content</label>
         <textarea name="resume_text" rows="6" class="form-control mb-3"
           placeholder="Paste resume content here..."></textarea>
 
@@ -33,7 +57,7 @@
         <textarea name="job_desc" rows="6" class="form-control mb-3"
           placeholder="Paste job description here..."></textarea>
 
-        <button class="btn btn-primary w-100">
+        <button class="btn btn-purple px-4">
           Optimize Resume
         </button>
       </form>
@@ -42,67 +66,113 @@
   </div>
 
   {% if ai_result %}
-  <!-- Full AI Output -->
+  <!-- AI Output -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
-      <h5 class="fw-bold mb-2">Full AI Output (Analysis)</h5>
-      <pre id="aiResultBox" style="white-space: pre-wrap; margin:0;">{{ ai_result }}</pre>
+      <h5 class="fw-bold mb-2">AI Analysis</h5>
 
-      <div class="d-flex gap-2 mt-3">
-        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="copyResult()">
-          Copy Full Output
-        </button>
+      <div class="result-box">
+        <pre id="aiResultBox">{{ ai_result }}</pre>
       </div>
+
+      <button class="btn btn-outline-purple btn-sm mt-3"
+              onclick="copyResult()">
+        Copy Analysis
+      </button>
     </div>
   </div>
   {% endif %}
 
   {% if optimized_resume %}
-<div class="card shadow-sm mt-4">
-  <div class="card-body">
-    <h5 class="fw-bold">Optimized Resume</h5>
+  <!-- Optimized Resume -->
+  <div class="card shadow-sm mt-4">
+    <div class="card-body">
+      <h5 class="fw-bold">Optimized Resume</h5>
 
-    <pre style="white-space: pre-wrap;">{{ optimized_resume }}</pre>
+      <div class="result-box">
+        <pre id="optimizedResumeBox">{{ optimized_resume }}</pre>
+      </div>
 
-    <a
-      href="{% url 'download-optimized-resume-pdf' %}?data={{ optimized_resume|urlencode }}"
-      class="btn btn-success mt-3"
-    >
-      Download as PDF
-    </a>
+      <a href="{% url 'download-optimized-resume-pdf' %}?data={{ optimized_resume|urlencode }}"
+         class="btn btn-success mt-3">
+         Download PDF
+      </a>
+    </div>
   </div>
-</div>
-{% endif %}
-
+  {% endif %}
 
 </div>
 
 <style>
-  .text-purple { color:#5b21b6; }
-  textarea { border-radius:10px; }
-  .card { border-radius:16px; }
+.optimizer-header{
+  background:linear-gradient(135deg,#5b21b6,#7c3aed);
+  color:white;
+  padding:22px;
+  border-radius:14px;
+}
+
+.bg-purple{ background:#5b21b6; }
+
+.btn-purple{
+  background:#5b21b6;
+  color:white;
+  border-radius:8px;
+}
+.btn-purple:hover{
+  background:#4c1d95;
+  color:white;
+}
+
+.btn-outline-purple{
+  border:1px solid #5b21b6;
+  color:#5b21b6;
+}
+.btn-outline-purple:hover{
+  background:#5b21b6;
+  color:white;
+}
+
+textarea{
+  border-radius:10px;
+}
+
+.card{
+  border-radius:16px;
+  border:1px solid #eee;
+}
+
+.progress{
+  background:#ede9fe;
+  border-radius:999px;
+}
+
+.progress-bar{
+  border-radius:999px;
+}
+
+.result-box{
+  background:#faf5ff;
+  border:1px solid #ede9fe;
+  border-radius:12px;
+  padding:12px;
+  max-height:350px;
+  overflow:auto;
+}
+
+.usage-pill{
+  background:#ede9fe;
+  padding:6px 12px;
+  border-radius:999px;
+  color:#5b21b6;
+  font-weight:600;
+}
 </style>
 
 <script>
 function copyResult() {
   const text = document.getElementById("aiResultBox")?.innerText || "";
-  if(!text.trim()) return alert("Nothing to copy.");
   navigator.clipboard.writeText(text);
-  alert("Copied to clipboard!");
-}
-
-function printResume() {
-  const content = document.getElementById("optimizedResumeBox")?.innerText || "";
-  if(!content.trim()) return alert("No optimized resume to print.");
-
-  const win = window.open('', '', 'width=900,height=650');
-  win.document.write('<html><head><title>Optimized Resume</title></head><body>');
-  win.document.write('<pre style="white-space:pre-wrap;font-family:Segoe UI,Arial,sans-serif;">' + content + '</pre>');
-  win.document.write('</body></html>');
-  win.document.close();
-  win.focus();
-  win.print();
-  win.close();
+  alert("Copied!");
 }
 </script>
 

@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 from .views import admin_analytics
-from .views import billing_history
+from .views import billing_history, download_invoice
 
 
 urlpatterns = [
@@ -45,6 +45,7 @@ path(
 #billing
 path("billing/", billing_history, name="billing-history"),
 
+path("invoice/<int:invoice_id>/download/", download_invoice, name="download-invoice"),
 
 
 ]
