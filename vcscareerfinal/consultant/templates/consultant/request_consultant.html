@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Consultant Support{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+  <h3>Request Consultant Support</h3>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="mb-3">
+      <label class="form-label">Purpose</label>
+      <input type="text" name="purpose" class="form-control" required>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Message (optional)</label>
+      <textarea name="message" class="form-control" rows="4"></textarea>
+    </div>
+
+    <button class="btn btn-primary">Submit Request</button>
+  </form>
+</div>
+{% endblock %}

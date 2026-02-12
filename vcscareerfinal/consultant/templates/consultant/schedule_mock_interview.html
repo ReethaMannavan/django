@@ -1,0 +1,39 @@
+
+{% extends "base.html" %}
+{% block title %}Schedule Mock Interview{% endblock %}
+
+{% block content %}
+<div class="container py-4" style="max-width:720px;">
+
+  <h2 class="fw-bold mb-2">Schedule Mock Interview</h2>
+  <p class="text-muted">
+    Pro Plus includes <strong>{{ limit }}</strong> mock interviews per month.
+    You’ve used <strong>{{ used }}</strong>. Remaining: <strong>{{ remaining }}</strong>.
+  </p>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <form method="POST">
+        {% csrf_token %}
+
+        <label class="fw-semibold mb-1">Interview Type</label>
+        <select name="interview_type" class="form-select mb-3" required>
+          <option value="">-- Select --</option>
+          <option value="behavioral">Behavioral</option>
+          <option value="technical">Technical</option>
+          <option value="case_study">Case Study</option>
+        </select>
+
+        <label class="fw-semibold mb-1">Target Role</label>
+        <input name="target_role" class="form-control mb-3" placeholder="e.g., Python Developer" required>
+
+        <label class="fw-semibold mb-1">Preferred Date & Time</label>
+        <input type="datetime-local" name="scheduled_at" class="form-control mb-3" required>
+
+        <button class="btn btn-success w-100">Submit Request</button>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}

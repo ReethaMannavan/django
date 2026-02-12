@@ -1,0 +1,549 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | VCS Careers{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="text-primary fw-bold m-0">
+    Welcome, {{ user.username }}!
+    <span class="badge bg-light text-primary ms-2">
+      {{ user.subscription_tier|upper }}
+    </span>
+  </h1>
+
+  <div class="text-end small text-muted">
+    {% if user.subscription_expiry %}
+      <div>
+        Renews:
+        <strong>{{ user.subscription_expiry }}</strong>
+      </div>
+    {% endif %}
+
+    {% if user.pending_downgrade %}
+      <div class="text-warning">
+        Downgrade → {{ user.pending_downgrade|upper }} scheduled
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+
+
+  <div class="row g-4">
+    <!-- ------------------ Free User ------------------ -->
+    {% if user.subscription_tier == 'free' %}
+
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Profile Completion</h5>
+          <p class="text-secondary small">
+            Complete your profile and upload your resume to get matched.
+          </p>
+
+          {% if user.candidateprofile %}
+          <div class="progress mb-2">
+            <div
+              class="progress-bar bg-primary"
+              role="progressbar"
+              style="width: {{ user.candidateprofile.profile_completion }}%;"
+            >
+              {{ user.candidateprofile.profile_completion }}%
+            </div>
+          </div>
+          {% else %}
+          <p class="text-muted small">Profile not created yet.</p>
+          {% endif %}
+
+          <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">Complete Profile</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Saved Jobs</h5>
+          {% if user.saved_jobs.exists %}
+          <p class="text-secondary small">
+            You have {{ user.saved_jobs.count }} saved job{{ user.saved_jobs.count|pluralize }}.
+          </p>
+          <a href="{% url 'saved-jobs' %}" class="btn btn-primary btn-sm">View Saved Jobs</a>
+          {% else %}
+          <p class="text-muted small">No saved jobs yet.</p>
+          <a href="{% url 'job-list' %}" class="btn btn-outline-primary btn-sm">Search Jobs</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">Monthly Application Usage</h5>
+      <p class="text-secondary small">
+        Track your application quota for this month.
+      </p>
+
+      {% if limit %}
+        <div class="progress mb-2" style="height:18px;">
+          <div class="progress-bar bg-primary"
+               style="width: {% widthratio month_count limit 100 %}%;">
+            {{ month_count }}/{{ limit }}
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-between small text-muted">
+          <span>Used: <strong>{{ month_count }}</strong></span>
+          <span>Remaining: <strong>{{ remaining }}</strong></span>
+        </div>
+      {% else %}
+        <div class="alert alert-success mb-0">
+          Unlimited applications available (Pro Plus)
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+
+<div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm h-100 border-primary">
+    <div class="card-body text-center">
+      <h5 class="card-title text-primary">Upgrade Your Plan</h5>
+
+      <p class="text-secondary small">
+        Unlock AI tools, consultant sessions, and advanced job matching.
+      </p>
+
+      <ul class="list-unstyled small text-muted mb-3">
+        <li>✔ 100 applications/month</li>
+        <li>✔ AI Resume Optimization</li>
+        <li>✔ AI Chatbot access</li>
+        <li>✔ Consultant sessions</li>
+      </ul>
+
+      <a href="{% url 'subscription' %}" class="btn btn-primary btn-sm">
+        View Plans
+      </a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100 border-primary">
+        <div class="card-body">
+          <h5 class="card-title text-primary mb-3">📄 Application Tracking</h5>
+
+          {% if user.applications.exists %}
+          <div class="mb-3">
+            {% for app in user.applications.all|slice:":3" %}
+            <div class="d-flex justify-content-between align-items-center mb-2 p-2 rounded border">
+              <div>
+                <strong>{{ app.job.title }}</strong><br />
+                <small class="text-muted">{{ app.job.company }}</small>
+              </div>
+              <div>
+                {% if app.status == "applied" %}
+                <span class="badge bg-secondary"><i class="bi bi-envelope"></i> {{ app.status|capfirst }}</span>
+                {% elif app.status == "reviewed" %}
+                <span class="badge bg-info"><i class="bi bi-eye"></i> {{ app.status|capfirst }}</span>
+                {% elif app.status == "interview" %}
+                <span class="badge bg-warning text-dark"><i class="bi bi-chat-dots"></i> {{ app.status|capfirst }}</span>
+                {% elif app.status == "selected" %}
+                <span class="badge bg-success"><i class="bi bi-check-circle"></i> {{ app.status|capfirst }}</span>
+                {% elif app.status == "rejected" %}
+                <span class="badge bg-danger"><i class="bi bi-x-circle"></i> {{ app.status|capfirst }}</span>
+                {% else %}
+                <span class="badge bg-secondary">{{ app.status|capfirst }}</span>
+                {% endif %}
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+
+          {% if user.applications.count > 3 %}
+          <a href="{% url 'applications-list' %}" class="btn btn-outline-primary btn-sm w-100">View All Applications</a>
+          {% endif %}
+          {% else %}
+          <div class="text-center py-4">
+            <i class="bi bi-folder-x display-4 text-muted mb-2"></i>
+            <p class="text-muted small">You haven't applied to any jobs yet.</p>
+            <a href="{% url 'job-list' %}" class="btn btn-outline-primary btn-sm w-100">Search Jobs</a>
+          </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+
+  
+
+    {% endif %}
+
+    <!-- ------------------ Pro User & pro plus------------------ -->
+  {% if user.subscription_tier == 'pro' or user.subscription_tier == 'pro_plus' %}
+
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Profile Completion</h5>
+          <p class="text-secondary small">
+            Keep your profile up to date for the best matches.
+          </p>
+          <div class="progress mb-2">
+            {% if user.candidateprofile %}
+            <div class="progress-bar bg-primary" role="progressbar"
+                 style="width: {{ user.candidateprofile.profile_completion }}%;">
+              {{ user.candidateprofile.profile_completion }}%
+            </div>
+            {% endif %}
+          </div>
+          <a href="{% url 'profile' %}" class="btn btn-primary btn-sm">Edit Profile</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Saved Jobs</h5>
+          <p class="text-secondary small">View saved jobs and track status.</p>
+          <a href="{% url 'saved-jobs' %}" class="btn btn-primary btn-sm">View Jobs</a>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="col-md-6 col-lg-4">
+  <div class="card shadow-sm h-100">
+    <div class="card-body">
+      <h5 class="card-title">Monthly Application Usage</h5>
+
+      {% if limit %}
+        <div class="progress mb-2" style="height:18px;">
+          <div class="progress-bar bg-primary"
+               style="width: {% widthratio month_count limit 100 %}%;">
+
+            {{ month_count }}/{{ limit }}
+          </div>
+        </div>
+
+        <div class="small text-muted">
+          Remaining: {{ remaining }}
+        </div>
+      {% else %}
+        <div class="alert alert-success mb-0">
+          Unlimited applications available
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+
+    <div class="col-12">
+  <div class="card shadow-sm border-warning h-100">
+    <div class="card-body">
+      <h5 class="card-title text-warning">Pro Features</h5>
+      <p class="text-secondary small">
+        Access advanced tools available in your plan.
+      </p>
+
+      <div class="row g-2 mt-2">
+        <div class="col-md-3">
+          <a href="{% url 'resume-optimizer' %}"
+   class="btn btn-outline-primary w-100 btn-sm">
+   AI Resume Optimizer
+</a>
+
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'pro-job-matching' %}" class="btn btn-outline-primary w-100 btn-sm">
+            Job Matching
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'pro-courses' %}" class="btn btn-outline-primary w-100 btn-sm">
+            VTS Training
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'pro-interview-chatbot' %}" class="btn btn-outline-primary w-100 btn-sm">
+            AI Chatbot
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'consultant-request' %}" class="btn btn-outline-primary w-100 btn-sm">
+            Consultant Support
+          </a>
+        </div>
+
+        <div class="col-md-3">
+          <a href="{% url 'my-consultant-requests' %}" class="btn btn-outline-primary btn-sm w-100">
+            Track Requests
+          </a>
+        </div>
+
+        <div class="col-md-3">
+  <a href="{% url 'billing-history' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     Billing History
+  </a>
+</div>
+
+
+        {% if user.subscription_tier == "pro_plus" %}
+<div class="col-md-3">
+  <a href="{% url 'schedule-mock' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     Mock Interview
+  </a>
+</div>
+
+<div class="col-md-3">
+  <a href="{% url 'my-mock-interviews' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     My Interviews
+  </a>
+</div>
+
+
+
+{% endif %}
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    {% endif %}
+
+    <!-- ------------------ Admin User ------------------ -->
+   {% if user.is_staff or user.is_superuser %}
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">User Management</h5>
+          <a href="#" class="btn btn-primary btn-sm">Manage Users</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Job Postings</h5>
+          <a href="{% url 'job-list' %}" class="btn btn-primary btn-sm">Manage Jobs</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Analytics</h5>
+          <a href="#" class="btn btn-primary btn-sm">View Analytics</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 col-lg-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">Consultant Queue</h5>
+          <a href="#" class="btn btn-primary btn-sm">View Queue</a>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+
+<style>
+  /* ===============================
+     VCS Dashboard — Purple Gradient Theme
+     =============================== */
+
+  .container.py-4,
+  .container.py-4 *{
+    font-family: "Segoe UI", sans-serif;
+  }
+
+  /* Background panel inside base page-container */
+  .page-container{
+    background:
+      radial-gradient(800px 400px at 10% 0%, rgba(124,58,237,0.12), transparent),
+      radial-gradient(800px 400px at 90% 10%, rgba(91,33,182,0.10), transparent),
+      #f8fafc;
+    border-radius: 18px;
+    padding: 18px;
+    border: 1px solid rgba(124,58,237,0.12);
+  }
+
+  /* Title */
+  .container.py-4 h1{
+    color: #5b21b6 !important;
+    font-weight: 900 !important;
+    letter-spacing: -0.02em;
+  }
+
+  /* Cards */
+  .container.py-4 .card{
+    background: #ffffff !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(15,23,42,0.08) !important;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.06);
+    transition: 0.2s ease;
+    overflow: hidden;
+  }
+
+  .container.py-4 .card:hover{
+    transform: translateY(-5px);
+    box-shadow: 0 18px 40px rgba(124,58,237,0.18);
+  }
+
+  .container.py-4 .card-body{
+    display:flex;
+    flex-direction:column;
+    height:100%;
+    padding:18px;
+  }
+
+  /* Make action buttons align evenly */
+  .container.py-4 .card-body > a.btn{
+    margin-top:auto;
+  }
+
+  /* Titles */
+  .container.py-4 .card-title{
+    color:#5b21b6 !important;
+    font-weight:800;
+    letter-spacing: -0.01em;
+  }
+
+  .container.py-4 .text-secondary.small{
+    color:#64748b !important;
+    line-height:1.5;
+  }
+
+  /* Buttons */
+  .container.py-4 .btn{
+    border-radius:999px;
+    font-weight:800;
+    transition: .15s ease;
+  }
+
+  .container.py-4 .btn:hover{
+    transform: translateY(-1px);
+    box-shadow: 0 10px 18px rgba(2,6,23,0.10);
+  }
+
+  .container.py-4 .btn-primary{
+    background: linear-gradient(135deg,#5b21b6,#7c3aed);
+    border:none;
+  }
+
+  .container.py-4 .btn-primary:hover{
+    background: linear-gradient(135deg,#4c1d95,#6d28d9);
+  }
+
+  .container.py-4 .btn-outline-primary{
+    border-color:#7c3aed;
+    color:#7c3aed;
+    background:rgba(124,58,237,0.06);
+  }
+
+  .container.py-4 .btn-outline-primary:hover{
+    background:rgba(124,58,237,0.12);
+  }
+
+  .container.py-4 .btn-outline-secondary{
+    background:rgba(100,116,139,0.06);
+  }
+
+  /* Progress */
+  .container.py-4 .progress{
+    height:10px;
+    background:#ede9fe;
+    border-radius:999px;
+    overflow:hidden;
+  }
+
+  .container.py-4 .progress-bar{
+    background: linear-gradient(90deg,#7c3aed,#4c1d95);
+    font-weight:900;
+  }
+
+  /* Application tracking accent */
+  .container.py-4 .border-primary{
+    border: 1px solid rgba(15,23,42,0.08) !important;
+    position:relative;
+  }
+
+  .container.py-4 .border-primary::before{
+    content:"";
+    position:absolute;
+    left:0;
+    top:0;
+    bottom:0;
+    width:6px;
+    background:linear-gradient(180deg,#7c3aed,#4c1d95);
+  }
+
+  /* Application rows */
+  .container.py-4 .d-flex.justify-content-between.align-items-center.mb-2.p-2.rounded.border{
+    background:#faf5ff;
+    border-color: rgba(124,58,237,0.14) !important;
+    border-radius:12px !important;
+    padding:12px !important;
+  }
+
+  /* Badges */
+  .badge{
+    border-radius:999px;
+    font-weight:800;
+  }
+  .badge i{ margin-right: 6px; }
+
+  /* Pro section */
+  .container.py-4 .border-warning{
+    border:1px solid rgba(124,58,237,0.25) !important;
+    background:
+      radial-gradient(600px 220px at 0% 0%, rgba(124,58,237,0.10), transparent),
+      #faf5ff;
+  }
+
+  /* Pro feature buttons */
+  #proFeatures .btn{
+    background:#ffffff;
+  }
+
+
+
+
+  @media (max-width: 576px){
+    .page-container{ padding: 14px; border-radius: 16px; }
+    .container.py-4 h1{ font-size: 1.4rem; }
+    .container.py-4 .card-body{ padding: 16px; }
+  }
+
+
+
+</style>
+
+{% endblock %}

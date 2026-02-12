@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Billing History{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+<h2 class="mb-4">Billing History</h2>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Invoice</th>
+      <th>Plan</th>
+      <th>Amount</th>
+      <th>Date</th>
+      <th>Action</th>   <!-- NEW COLUMN -->
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for invoice in invoices %}
+    <tr>
+      <td>{{ invoice.invoice_number }}</td>
+      <td>{{ invoice.plan }}</td>
+      <td>₹{{ invoice.amount }}</td>
+      <td>{{ invoice.created_at }}</td>
+
+      <!-- DOWNLOAD BUTTON -->
+      <td>
+        <a href="{% url 'download-invoice' invoice.id %}"
+           class="btn btn-sm btn-outline-primary">
+           Download
+        </a>
+      </td>
+
+    </tr>
+    {% empty %}
+    <tr>
+      <td colspan="5" class="text-center">No invoices yet</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+</div>
+{% endblock %}

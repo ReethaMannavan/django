@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% block title %}Resume Optimizer{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <h2 class="fw-bold text-purple mb-3">AI Resume Optimizer</h2>
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+
+      <div class="d-flex justify-content-between mb-3">
+        <div>
+          <strong>Monthly Usage</strong><br>
+          {{ month_count }} / {{ limit }}
+        </div>
+        <div class="text-success">
+          Remaining: {{ remaining }}
+        </div>
+      </div>
+
+      <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label class="fw-semibold">Upload Resume (optional)</label>
+        <input type="file" name="resume_file" class="form-control mb-3" accept=".txt,.doc,.docx,.pdf">
+
+        <label class="fw-semibold">Paste Resume Text</label>
+        <textarea name="resume_text" rows="6" class="form-control mb-3"
+          placeholder="Paste resume content here..."></textarea>
+
+        <label class="fw-semibold">Job Description</label>
+        <textarea name="job_desc" rows="6" class="form-control mb-3"
+          placeholder="Paste job description here..."></textarea>
+
+        <button class="btn btn-primary w-100">
+          Optimize Resume
+        </button>
+      </form>
+
+    </div>
+  </div>
+
+  {% if ai_result %}
+  <!-- Full AI Output -->
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5 class="fw-bold mb-2">Full AI Output (Analysis)</h5>
+      <pre id="aiResultBox" style="white-space: pre-wrap; margin:0;">{{ ai_result }}</pre>
+
+      <div class="d-flex gap-2 mt-3">
+        <button type="button" class="btn btn-outline-secondary btn-sm" onclick="copyResult()">
+          Copy Full Output
+        </button>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {% if optimized_resume %}
+<div class="card shadow-sm mt-4">
+  <div class="card-body">
+    <h5 class="fw-bold">Optimized Resume</h5>
+
+    <pre style="white-space: pre-wrap;">{{ optimized_resume }}</pre>
+
+    <a
+      href="{% url 'download-optimized-resume-pdf' %}?data={{ optimized_resume|urlencode }}"
+      class="btn btn-success mt-3"
+    >
+      Download as PDF
+    </a>
+  </div>
+</div>
+{% endif %}
+
+
+</div>
+
+<style>
+  .text-purple { color:#5b21b6; }
+  textarea { border-radius:10px; }
+  .card { border-radius:16px; }
+</style>
+
+<script>
+function copyResult() {
+  const text = document.getElementById("aiResultBox")?.innerText || "";
+  if(!text.trim()) return alert("Nothing to copy.");
+  navigator.clipboard.writeText(text);
+  alert("Copied to clipboard!");
+}
+
+function printResume() {
+  const content = document.getElementById("optimizedResumeBox")?.innerText || "";
+  if(!content.trim()) return alert("No optimized resume to print.");
+
+  const win = window.open('', '', 'width=900,height=650');
+  win.document.write('<html><head><title>Optimized Resume</title></head><body>');
+  win.document.write('<pre style="white-space:pre-wrap;font-family:Segoe UI,Arial,sans-serif;">' + content + '</pre>');
+  win.document.write('</body></html>');
+  win.document.close();
+  win.focus();
+  win.print();
+  win.close();
+}
+</script>
+
+{% endblock %}
