@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% block title %}Job Matches{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+  <!-- Header -->
+  <div class="match-header mb-4">
+    <h2 class="fw-bold mb-1">Your Job Matches</h2>
+    <div class="small opacity-75">
+      AI-based job matching tailored to your skills
+    </div>
+  </div>
+
+  {% if matched_jobs %}
+    {% for item in matched_jobs %}
+      <div class="card shadow-sm match-card mb-3">
+        <div class="card-body">
+
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <h5 class="fw-bold mb-1">
+                {{ item.job.title }}
+              </h5>
+              <div class="text-muted">
+                {{ item.job.company }} • {{ item.job.location }}
+              </div>
+            </div>
+
+            <span class="badge bg-purple">
+              {{ item.match_percentage }}%
+            </span>
+          </div>
+
+          <!-- Match bar -->
+          <div class="progress mt-3" style="height:10px;">
+            <div class="progress-bar bg-purple"
+                 style="width:{{ item.match_percentage }}%;">
+            </div>
+          </div>
+
+          <div class="mt-3 small text-muted">
+            Matching skills:
+            <strong>{{ item.matched_skills|join:", " }}</strong>
+          </div>
+
+          <a href="{% url 'job-detail' item.job.id %}"
+             class="btn btn-outline-purple btn-sm mt-3">
+            View Job
+          </a>
+
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    <div class="card shadow-sm">
+      <div class="card-body text-center text-muted">
+        No matching jobs found yet. Update your skills for better matches.
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+
+<style>
+.match-header{
+  background:linear-gradient(135deg,#5b21b6,#7c3aed);
+  color:white;
+  padding:22px;
+  border-radius:14px;
+}
+
+.match-card{
+  border-radius:16px;
+  border:1px solid #eee;
+}
+
+.bg-purple{
+  background:#5b21b6;
+}
+
+.btn-outline-purple{
+  border:1px solid #5b21b6;
+  color:#5b21b6;
+}
+.btn-outline-purple:hover{
+  background:#5b21b6;
+  color:white;
+}
+
+.progress{
+  background:#ede9fe;
+  border-radius:999px;
+}
+
+.progress-bar{
+  border-radius:999px;
+}
+</style>
+
+{% endblock %}

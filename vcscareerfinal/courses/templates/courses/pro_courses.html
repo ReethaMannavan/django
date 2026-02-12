@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load custom_filters %}
+
+{% block title %}VTS Training Courses | VCS Careers{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <div>
+      <h2 class="fw-bold text-purple mb-1">VTS Training</h2>
+      <p class="text-muted mb-0">Pro Plus users can enroll in <b>any 1 course</b> and earn a certificate.</p>
+    </div>
+
+    {% if active_enrollment %}
+      <span class="badge bg-success p-2">
+        Selected: {{ active_enrollment.course.title }}
+      </span>
+    {% else %}
+      <span class="badge bg-warning text-dark p-2">
+        No course selected (1 allowed)
+      </span>
+    {% endif %}
+  </div>
+
+  <div class="row g-3">
+    {% for course in courses %}
+    <div class="col-md-6 col-lg-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body d-flex flex-column">
+          <h5 class="fw-bold mb-1">{{ course.title }}</h5>
+          <p class="text-muted small">{{ course.description }}</p>
+
+          <div class="mt-2">
+            <div class="small text-muted">Progress</div>
+            <div class="progress" style="height:10px;">
+              {% with p=user_progress|get_item:course.id %}
+              <div class="progress-bar bg-primary" style="width: {{ p|default:0 }}%;">
+                {{ p|default:0 }}%
+              </div>
+              {% endwith %}
+            </div>
+          </div>
+
+
+          {% if active_enrollment and active_enrollment.course.id == course.id %}
+ {% if active_enrollment and active_enrollment.is_completed and active_enrollment.certificate_file %}
+    <div class="mt-2">
+      <a href="{{ active_enrollment.certificate_file.url }}"
+         class="btn btn-success btn-sm">
+         Download Certificate
+      </a>
+    </div>
+  {% endif %}
+{% endif %}
+
+          <div class="mt-3 d-flex gap-2">
+            {% if course.video_url %}
+              <a href="{{ course.video_url }}" target="_blank" class="btn btn-outline-primary btn-sm">
+                View Course
+              </a>
+            {% endif %}
+
+            {% if not active_enrollment %}
+              <a href="{% url 'select-course' course.id %}" class="btn btn-primary btn-sm">
+                Enroll (Pick this course)
+              </a>
+            {% else %}
+              {% if active_enrollment.course.id == course.id %}
+                <button class="btn btn-success btn-sm" disabled>Enrolled</button>
+                <!-- TEMP TEST BUTTON -->
+      <a href="{% url 'complete-course' course.id %}" class="btn btn-warning btn-sm">
+        Mark Complete (Test)
+      </a>
+              {% else %}
+                <button class="btn btn-secondary btn-sm" disabled>Locked (1 course only)</button>
+              {% endif %}
+            {% endif %}
+          </div>
+
+        </div>
+      </div>
+    </div>
+    {% empty %}
+      <p class="text-muted">No courses available yet.</p>
+    {% endfor %}
+  </div>
+
+</div>
+
+<style>
+  .text-purple { color:#5b21b6; }
+  .card { border-radius:16px; }
+  .progress { border-radius:999px; background:#ede9fe; }
+  .progress-bar { border-radius:999px; }
+</style>
+{% endblock %}

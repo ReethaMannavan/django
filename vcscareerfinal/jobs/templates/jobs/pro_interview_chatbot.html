@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}AI Interview Chatbot | VCS Careers{% endblock %}
+
+{% block content %}
+<h2 class="ai">AI Interview Chatbot</h2>
+<p>Ask questions about interview preparation, sample answers, and guidance.</p>
+
+
+<div class="card shadow-sm mb-3">
+  <div class="card-body d-flex justify-content-between align-items-center">
+
+    <div>
+      <h6 class="mb-1 fw-bold">AI Chatbot Usage</h6>
+
+      {% if chatbot_limit == None %}
+        <span class="badge bg-success">Pro Plus — Unlimited</span>
+      {% else %}
+        <div class="text-muted small">
+          {{ chatbot_count }} / {{ chatbot_limit }} messages used
+        </div>
+      {% endif %}
+    </div>
+
+    {% if chatbot_limit != None %}
+    <div class="text-end">
+      <div class="fw-bold text-primary" style="font-size:20px;">
+        {{ chatbot_remaining }}
+      </div>
+      <small class="text-muted">Remaining</small>
+    </div>
+    {% endif %}
+
+  </div>
+</div>
+
+
+
+<div id="chatBox" style="border:1px solid #e5e7eb; padding:10px; height:300px; overflow-y:auto; margin-bottom:10px;">
+  <!-- Chat messages appear here -->
+</div>
+
+<input type="text" id="userMessage" placeholder="Type your question..." style="width:70%; padding:8px;">
+<button onclick="sendMessage()" style="padding:8px 12px; background:#2563eb; color:white; border:none; border-radius:4px;">Send</button>
+
+<script>
+function sendMessage() {
+    const msgInput = document.getElementById('userMessage');
+    const message = msgInput.value.trim();
+    if(!message) return;
+
+    // Show user's message
+    const chatBox = document.getElementById('chatBox');
+    chatBox.innerHTML += `<div style="color:#1e3a8a;"><b>You:</b> ${message}</div>`;
+
+    fetch("{% url 'pro-interview-chatbot-api' %}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+            "X-CSRFToken": "{{ csrf_token }}",
+        },
+        body: `message=${encodeURIComponent(message)}`
+    })
+    .then(res => res.json())
+    .then(data => {
+    const answer = data.answer || "Sorry, I couldn't generate a response.";
+    chatBox.innerHTML += `<div style="color:#047857;"><b>AI:</b> ${answer}</div>`;
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // update usage UI instantly
+    if (data.chatbot_count !== undefined) {
+        document.querySelector(".text-muted.small").innerText =
+            `${data.chatbot_count} / {{ chatbot_limit }} messages used`;
+    }
+
+    if (data.chatbot_remaining !== undefined) {
+        document.querySelector(".text-end .fw-bold").innerText =
+            data.chatbot_remaining;
+    }
+});
+
+
+    msgInput.value = '';
+}
+</script>
+
+<style>
+.card h6 {
+  color:#5b21b6;
+}
+.ai{
+    color:#5b21b6;
+}
+</style>
+
+{% endblock %}
