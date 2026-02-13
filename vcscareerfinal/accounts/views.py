@@ -660,8 +660,10 @@ def download_optimized_resume_pdf(request):
     elements.append(Paragraph(f"Candidate: {username}", normal_style))
     elements.append(Spacer(1, 20))
 
+    clean_data = data.replace("<br>", "<br />")
+
     # Resume content
-    for line in data.split("\n"):
+    for line in clean_data.split("\n"):
         elements.append(Paragraph(line, normal_style))
         elements.append(Spacer(1, 6))
 
