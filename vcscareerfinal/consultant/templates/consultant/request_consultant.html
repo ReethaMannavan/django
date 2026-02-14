@@ -2,23 +2,60 @@
 {% block title %}Consultant Support{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-  <h3>Request Consultant Support</h3>
+<div class="container mt-5">
 
-  <form method="post">
-    {% csrf_token %}
+  <div class="row justify-content-center">
+    <div class="col-md-7">
 
-    <div class="mb-3">
-      <label class="form-label">Purpose</label>
-      <input type="text" name="purpose" class="form-control" required>
+      <div class="card shadow-sm border-0" style="border-radius:14px;">
+        
+        <!-- Header -->
+        <div class="card-header text-white"
+             style="background:#8c7aaa; border-radius:14px 14px 0 0;">
+          <h5 class="mb-0 fw-semibold">
+            Request Consultant Support
+          </h5>
+        </div>
+
+        <!-- Body -->
+        <div class="card-body p-4">
+
+          <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold">Purpose</label>
+              <input type="text"
+                     name="purpose"
+                     class="form-control"
+                     placeholder="Example: Resume review / Interview preparation"
+                     required>
+            </div>
+
+            <div class="mb-4">
+              <label class="form-label fw-semibold">
+                Message (optional)
+              </label>
+              <textarea name="message"
+                        class="form-control"
+                        rows="4"
+                        placeholder="Add additional details for the consultant..."></textarea>
+            </div>
+
+            <div class="text-end">
+              <button class="btn px-4"
+                      style="background:#8c7aaa; color:white; border-radius:8px;">
+                Submit Request
+              </button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
     </div>
+  </div>
 
-    <div class="mb-3">
-      <label class="form-label">Message (optional)</label>
-      <textarea name="message" class="form-control" rows="4"></textarea>
-    </div>
-
-    <button class="btn btn-primary">Submit Request</button>
-  </form>
 </div>
 {% endblock %}

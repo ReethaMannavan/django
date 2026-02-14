@@ -3,70 +3,106 @@
 
 {% block content %}
 <div class="container mt-4">
-  <h3 class="mb-4">Consultant Request Tracking</h3>
+
+  <h3 class="mb-4 fw-bold" style="color:#5b21b6;">
+    Consultant Request Tracking
+  </h3>
 
   <!-- Stats Row -->
   <div class="row mb-4">
+
     <div class="col-md-3">
-      <div class="card text-center p-3 shadow-sm">
-        <h6>Total</h6>
-        <h4>{{ total_requests }}</h4>
+      <div class="card text-center p-3 shadow-sm border-0"
+           style="border-radius:12px; background:#ede9fe;">
+        <h6 style="color:#5b21b6;">Total</h6>
+        <h4 class="fw-bold">{{ total_requests }}</h4>
       </div>
     </div>
+
     <div class="col-md-3">
-      <div class="card text-center p-3 shadow-sm">
-        <h6>Pending</h6>
-        <h4>{{ pending_count }}</h4>
+      <div class="card text-center p-3 shadow-sm border-0"
+           style="border-radius:12px; background:#f5f3ff;">
+        <h6 style="color:#5b21b6;">Pending</h6>
+        <h4 class="fw-bold">{{ pending_count }}</h4>
       </div>
     </div>
+
     <div class="col-md-3">
-      <div class="card text-center p-3 shadow-sm">
-        <h6>In Progress</h6>
-        <h4>{{ in_progress_count }}</h4>
+      <div class="card text-center p-3 shadow-sm border-0"
+           style="border-radius:12px; background:#ede9fe;">
+        <h6 style="color:#5b21b6;">In Progress</h6>
+        <h4 class="fw-bold">{{ in_progress_count }}</h4>
       </div>
     </div>
+
     <div class="col-md-3">
-      <div class="card text-center p-3 shadow-sm">
-        <h6>Completed</h6>
-        <h4>{{ completed_count }}</h4>
+      <div class="card text-center p-3 shadow-sm border-0"
+           style="border-radius:12px; background:#ddd6fe;">
+        <h6 style="color:#5b21b6;">Completed</h6>
+        <h4 class="fw-bold">{{ completed_count }}</h4>
       </div>
     </div>
+
   </div>
 
   <!-- Table -->
-  <div class="card shadow-sm">
+  <div class="card shadow-sm border-0" style="border-radius:12px;">
     <div class="card-body">
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th>Purpose</th>
-            <th>Status</th>
-            <th>Requested On</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for req in requests %}
-          <tr>
-            <td>{{ req.purpose }}</td>
-            <td>
-              {% if req.status == 'pending' %}
-                <span class="badge bg-warning">Pending</span>
-              {% elif req.status == 'in_progress' %}
-                <span class="badge bg-info">In Progress</span>
-              {% else %}
-                <span class="badge bg-success">Completed</span>
-              {% endif %}
-            </td>
-            <td>{{ req.created_at|date:"M d, Y" }}</td>
-          </tr>
-          {% empty %}
-          <tr>
-            <td colspan="3" class="text-center">No consultant requests found.</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+
+          <thead style="background:#5b21b6; color:white;">
+            <tr>
+              <th>Purpose</th>
+              <th>Status</th>
+              <th>Requested On</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for req in requests %}
+            <tr>
+              <td class="fw-medium">{{ req.purpose }}</td>
+
+              <td>
+                {% if req.status == 'pending' %}
+                  <span class="badge"
+                        style="background:#facc15; color:black;">
+                    Pending
+                  </span>
+
+                {% elif req.status == 'in_progress' %}
+                  <span class="badge"
+                        style="background:#7c3aed;">
+                    In Progress
+                  </span>
+
+                {% else %}
+                  <span class="badge"
+                        style="background:#4c1d95;">
+                    Completed
+                  </span>
+                {% endif %}
+              </td>
+
+              <td>{{ req.created_at|date:"M d, Y" }}</td>
+            </tr>
+
+            {% empty %}
+            <tr>
+              <td colspan="3" class="text-center text-muted py-4">
+                No consultant requests found.
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+
+        </table>
+      </div>
+
     </div>
   </div>
+
 </div>
 {% endblock %}
