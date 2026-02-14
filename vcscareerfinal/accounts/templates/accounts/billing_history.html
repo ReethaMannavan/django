@@ -1,47 +1,66 @@
 {% extends "base.html" %}
-
 {% block title %}Billing History{% endblock %}
 
 {% block content %}
 <div class="container py-4">
 
-<h2 class="mb-4">Billing History</h2>
+<h2 class="fw-bold mb-4 text-primary">Billing History</h2>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Invoice</th>
-      <th>Plan</th>
-      <th>Amount</th>
-      <th>Date</th>
-      <th>Action</th>   <!-- NEW COLUMN -->
-    </tr>
-  </thead>
+<div class="card shadow-sm">
+  <div class="card-body p-0">
 
-  <tbody>
-    {% for invoice in invoices %}
-    <tr>
-      <td>{{ invoice.invoice_number }}</td>
-      <td>{{ invoice.plan }}</td>
-      <td>₹{{ invoice.amount }}</td>
-      <td>{{ invoice.created_at }}</td>
+    <table class="table mb-0 align-middle">
+      <thead class="table-light">
+        <tr>
+          <th>Invoice</th>
+          <th>Plan</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th></th>
+        </tr>
+      </thead>
 
-      <!-- DOWNLOAD BUTTON -->
-      <td>
-        <a href="{% url 'download-invoice' invoice.id %}"
-           class="btn btn-sm btn-outline-primary">
-           Download
-        </a>
-      </td>
+      <tbody>
+        {% for invoice in invoices %}
+        <tr>
+          <td class="fw-semibold">
+            {{ invoice.invoice_number }}
+          </td>
 
-    </tr>
-    {% empty %}
-    <tr>
-      <td colspan="5" class="text-center">No invoices yet</td>
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
+          <td>
+            <span class="badge bg-light text-primary">
+              {{ invoice.plan }}
+            </span>
+          </td>
+
+          <td class="fw-bold">
+            ₹{{ invoice.amount }}
+          </td>
+
+          <td class="text-muted">
+            {{ invoice.created_at|date:"M d, Y" }}
+          </td>
+
+          <td class="text-end">
+            <a href="{% url 'download-invoice' invoice.id %}"
+               class="btn btn-outline-primary btn-sm">
+               <i class="bi bi-download"></i> Download
+            </a>
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center py-4 text-muted">
+            No invoices yet
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+</div>
 
 </div>
 {% endblock %}

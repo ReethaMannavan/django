@@ -64,6 +64,8 @@ class CandidateProfile(models.Model):
         null=True,
         validators=[validate_resume_file]
     )
+     # NEW FIELD (safe)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
 
     def __str__(self):
         return self.user.username

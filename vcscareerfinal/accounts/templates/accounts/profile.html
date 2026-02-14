@@ -24,7 +24,7 @@ body {
 .container {
     max-width: 1000px;
     margin: 40px auto;
-    padding: 20px;
+    padding: 20px 40px; 
 }
 
 .profile-layout {
@@ -63,7 +63,19 @@ form input, form textarea, form select {
     padding: 10px;
     margin-bottom: 12px;
     border-radius: 8px;
-    border: 1px solid #e5e7eb;
+    border: 1px solid #7c3aed;
+}
+
+form textarea {
+    position: relative;
+}
+
+form input:focus,
+form textarea:focus,
+form select:focus {
+    outline: none;
+    border-color: #6d28d9;
+    box-shadow: 0 0 0 2px rgba(124,58,237,0.2);
 }
 
 /* Buttons */
@@ -83,6 +95,62 @@ button {
     background: #faf5ff;
     border-radius: 8px;
 }
+
+#editPanel {
+    max-width: 520px;
+    margin-left: auto;
+    padding:40px 40px;
+}
+
+/* Skills dropdown */
+.skills-dropdown {
+  border: 1px solid #e5e7eb;
+  background: white;
+  border-radius: 8px;
+  padding: 8px;
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+
+
+.skill-item {
+  display: inline-block;
+  background: #ede9fe;
+  color: #5b21b6;
+  padding: 6px 10px;
+  border-radius: 16px;
+  margin: 4px;
+  cursor: pointer;
+  font-size: 13px;
+  border: 1px solid #ddd6fe;
+  transition: 0.15s;
+}
+
+.skill-item:hover {
+  background: #7c3aed;
+  color: white;
+}
+
+form p {
+  position: relative;
+}
+
+input[type="file"] {
+  border: none;
+  padding: 6px 0;
+}
+
+.clearable-file-input {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+
 </style>
 </head>
 
@@ -107,52 +175,95 @@ button {
     <div class="profile-layout">
 
         <!-- PROFILE SUMMARY -->
-        <div class="card">
-            <h3 style="color:#4c1d95;">Profile Summary</h3>
+       <div class="card">
+    <h3 style="color:#4c1d95; margin-bottom:10px;">Profile Summary</h3>
 
-            {% if form.instance.pk %}
-                {% for field in form %}
-                    <p>
-                        <strong>{{ field.label }}:</strong>
-                        {{ field.value|default:"Not provided" }}
-                    </p>
-                {% endfor %}
+    {% if form.instance.profile_image %}
+<div style="display:flex; justify-content:center; margin-bottom:15px;">
+    <img src="{{ form.instance.profile_image.url }}"
+         style="width:90px;height:90px;border-radius:50%;object-fit:cover;border:3px solid #ede9fe;">
+</div>
+{% endif %}
 
-                {% if form.instance.resume %}
-                <div class="resume-section">
-                    Resume:
-                    <a href="{{ form.instance.resume.url }}" target="_blank">
-                        View / Download
-                    </a>
-                </div>
-                {% endif %}
 
-                <button onclick="toggleEdit()">Edit Profile</button>
-            {% else %}
-                <p>No profile created yet.</p>
-                <button onclick="toggleEdit()">Create Profile</button>
-            {% endif %}
+    <div style="height:2px;background:#ede9fe;margin-bottom:18px;"></div>
+
+    {% if form.instance.pk %}
+
+        {% for field in form %}
+        <div style="
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:10px 0;
+            border-bottom:1px solid #f3f4f6;
+            font-size:14px;
+        ">
+            <span style="color:#6b7280; font-weight:500;">
+                {{ field.label }}
+            </span>
+
+            <span style="font-weight:600; color:#111827;">
+                {{ field.value|default:"Not provided" }}
+            </span>
         </div>
+        {% endfor %}
 
-        <!-- EDIT PANEL (hidden initially) -->
+        {% if form.instance.resume %}
+        <div class="resume-section" style="margin-top:15px;">
+            Resume:
+            <a href="{{ form.instance.resume.url }}" target="_blank">
+                View / Download
+            </a>
+        </div>
+        {% endif %}
+
+        <button style="margin-top:18px;" onclick="toggleEdit()">Edit Profile</button>
+
+    {% else %}
+        <p>No profile created yet.</p>
+        <button onclick="toggleEdit()">Create Profile</button>
+    {% endif %}
+</div>
+
+
+        <!-- EDIT PANEL -->
         <div class="card" id="editPanel" style="display:none;">
             <h3 style="color:#4c1d95;">Edit Profile</h3>
 
-            <form method="POST" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
+         <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
 
-                {% if form.instance.resume %}
-                <div class="resume-section">
-                    Current Resume:
-                    <a href="{{ form.instance.resume.url }}" target="_blank">
-                        View / Download
-                    </a>
-                </div>
-                {% endif %}
+    {{ form.full_name.label_tag }} {{ form.full_name }}
+    {{ form.phone.label_tag }} {{ form.phone }}
+    {{ form.experience.label_tag }} {{ form.experience }}
+    {{ form.skills.label_tag }} {{ form.skills }}
+    {{ form.resume.label_tag }} {{ form.resume }}
 
-                <button type="submit">Save Profile</button>
-            </form>
+    <!-- PROFILE IMAGE -->
+    <label>Profile Image</label>
+
+    {% if form.instance.profile_image %}
+    <div style="margin-bottom:10px;">
+        <img src="{{ form.instance.profile_image.url }}"
+             style="width:70px;height:70px;border-radius:50%;object-fit:cover;">
+    </div>
+    {% endif %}
+
+    <input type="file" name="profile_image">
+
+    {% if form.instance.resume %}
+    <div class="resume-section">
+        Current Resume:
+        <a href="{{ form.instance.resume.url }}" target="_blank">
+            View / Download
+        </a>
+    </div>
+    {% endif %}
+
+    <button type="submit">Save Profile</button>
+</form>
+
         </div>
 
     </div>
@@ -163,6 +274,54 @@ function toggleEdit() {
     const panel = document.getElementById("editPanel");
     panel.style.display = panel.style.display === "none" ? "block" : "none";
 }
+
+/* AUTOSKILL SUGGESTIONS */
+
+const suggestions = [
+  "Python","Django","SQL","JavaScript",
+  "HTML","CSS","React","Machine Learning",
+  "Git","Docker","Data Analysis"
+];
+
+window.addEventListener("DOMContentLoaded", function () {
+  const textarea = document.getElementById("id_skills");
+  if (!textarea) return;
+
+  const dropdown = document.createElement("div");
+  dropdown.className = "skills-dropdown";
+  textarea.parentNode.appendChild(dropdown);
+
+  textarea.addEventListener("input", function() {
+    const value = textarea.value.split(",").pop().trim().toLowerCase();
+    dropdown.innerHTML = "";
+
+    if (!value) {
+      dropdown.style.display = "none";
+      return;
+    }
+
+    const matches = suggestions.filter(s =>
+      s.toLowerCase().startsWith(value)
+    );
+
+    matches.forEach(match => {
+      const item = document.createElement("div");
+      item.className = "skill-item";
+      item.innerText = match;
+
+      item.onclick = () => {
+        let parts = textarea.value.split(",");
+        parts[parts.length - 1] = " " + match;
+        textarea.value = parts.join(",").replace(/^,/, "").trim() + ", ";
+        dropdown.style.display = "none";
+      };
+
+      dropdown.appendChild(item);
+    });
+
+    dropdown.style.display = matches.length ? "block" : "none";
+  });
+});
 </script>
 
 </body>

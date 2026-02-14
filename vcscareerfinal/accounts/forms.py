@@ -27,7 +27,7 @@ from .models import CandidateProfile
 class CandidateProfileForm(forms.ModelForm):
     class Meta:
         model = CandidateProfile
-        fields = ['full_name', 'phone', 'experience', 'skills', 'resume']
+        fields = ['full_name', 'phone', 'experience', 'skills', 'resume','profile_image', ]
         widgets = {
             'full_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your full name'}),
             'phone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+1234567890'}),

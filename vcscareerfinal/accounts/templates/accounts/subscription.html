@@ -190,30 +190,253 @@ async function openPayment(planKey, planName, price, upgradeUrl) {
 
 
 <style>
-.pricing-section { padding:60px 30px; background:#f8fafc; }
-.glass-card { border-radius:22px; padding:36px 28px; color:#fff; text-align:center;
-  box-shadow:0 25px 50px rgba(0,0,0,0.15); display:flex; flex-direction:column; justify-content:space-between; }
-.glass-card:hover { transform:translateY(-10px); box-shadow:0 35px 70px rgba(0,0,0,0.2); }
-.glass-card h5 { background:rgba(255,255,255,0.9); color:purple; padding:6px 18px; border-radius:999px; font-weight:700; margin-bottom:24px; }
-.price { font-size:42px; font-weight:800; }
-.features { list-style:none; padding:0; margin:28px 0; text-align:left; }
-.glass-card { background:linear-gradient(180deg,#ff7a8a,#ffb36b); }
-.glass-card.pro { background:linear-gradient(180deg,#8bc34a,#dce775); }
-.glass-card:last-child { background:linear-gradient(180deg,#4fc3f7,#ce93d8); }
-.payment-modal { border-radius:20px; }
-.payment-plan { background:#f3e8ff; border-radius:14px; padding:16px; text-align:center; }
-#planName { font-weight:700; color:#5b21b6; }
-#planPrice { font-size:28px; font-weight:800; }
-.plan-title{
-  color:#5b21b6;
-  font-size:42px;
-  letter-spacing:-0.02em;
+/* ====== PRICING SECTION: AURORA BACKGROUND ====== */
+.pricing-section{
+  padding: 80px 30px;
+  background:
+    radial-gradient(900px 450px at 15% 10%, rgba(124,58,237,0.22), transparent 60%),
+    radial-gradient(700px 360px at 85% 18%, rgba(59,130,246,0.18), transparent 60%),
+    radial-gradient(800px 420px at 60% 90%, rgba(236,72,153,0.14), transparent 62%),
+    linear-gradient(180deg, #f8fafc 0%, #f6f3ff 60%, #f8fafc 100%);
+  position: relative;
+  overflow: hidden;
 }
 
+/* faint pattern */
+.pricing-section::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(17,24,39,0.05) 1px, transparent 1px);
+  background-size: 18px 18px;
+  opacity: .25;
+  pointer-events:none;
+}
+
+.text-center{ position: relative; z-index: 1; }
+
+/* ====== TITLES ====== */
+.plan-title{
+  color:#4c1d95;
+  font-size:44px;
+  letter-spacing:-0.03em;
+  text-shadow: 0 6px 24px rgba(124,58,237,0.12);
+}
 .plan-subtitle{
   color:#64748b;
   font-size:16px;
 }
+
+/* ====== GLASS CARD BASE ====== */
+.glass-card{
+  position: relative;
+  z-index: 1;
+  border-radius: 22px;
+  padding: 38px 28px;
+  text-align: center;
+  background: rgba(255,255,255,0.65);
+  border: 1px solid rgba(255,255,255,0.55);
+  box-shadow: 0 18px 55px rgba(17,24,39,0.10);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: transform .25s ease, box-shadow .25s ease;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  overflow: hidden;
+}
+
+/* inner glow */
+.glass-card::after{
+  content:"";
+  position:absolute;
+  inset: 0;
+  background:
+    radial-gradient(600px 250px at 30% 10%, rgba(124,58,237,0.18), transparent 55%),
+    radial-gradient(500px 240px at 80% 35%, rgba(59,130,246,0.12), transparent 60%),
+    radial-gradient(600px 260px at 50% 110%, rgba(236,72,153,0.10), transparent 55%);
+  opacity: .70;
+  pointer-events:none;
+}
+
+/* gradient border ring */
+.glass-card::before{
+  content:"";
+  position:absolute;
+  inset:-2px;
+  border-radius: 24px;
+  background: linear-gradient(135deg,
+    rgba(124,58,237,0.75),
+    rgba(59,130,246,0.55),
+    rgba(236,72,153,0.55)
+  );
+  opacity: 0;
+  filter: blur(10px);
+  transition: opacity .25s ease;
+  pointer-events:none;
+}
+
+.glass-card:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 30px 80px rgba(17,24,39,0.16);
+}
+.glass-card:hover::before{
+  opacity: 1;
+}
+
+/* ====== PLAN PILL HEADER ====== */
+.glass-card h5{
+  display:inline-block;
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-weight: 800;
+  margin-bottom: 18px;
+  color:#4c1d95;
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(124,58,237,0.18);
+  box-shadow: 0 10px 22px rgba(124,58,237,0.08);
+  position: relative;
+  z-index: 2;
+}
+
+/* ====== PRICE ====== */
+.price{
+  font-size: 46px;
+  font-weight: 900;
+  color:#111827;
+  letter-spacing:-0.02em;
+  position: relative;
+  z-index: 2;
+}
+.price span{
+  font-size: 14px;
+  font-weight: 600;
+  color:#64748b;
+  margin-left: 6px;
+}
+
+/* ====== FEATURES ====== */
+.features{
+  list-style:none;
+  padding:0;
+  margin: 26px 0 18px;
+  text-align:left;
+  position: relative;
+  z-index: 2;
+}
+.features li{
+  padding: 10px 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid rgba(229,231,235,0.7);
+  font-size: 14px;
+  color:#111827;
+}
+.features li::marker{ content:""; } /* ensure consistent */
+.features li{
+  display:flex;
+  align-items:flex-start;
+  gap:10px;
+}
+.features li::before{
+  content:"✓";
+  font-weight: 900;
+  color:#7c3aed;
+  margin-top: 1px;
+}
+
+/* ====== BUTTONS ====== */
+.glass-card .btn{
+  border-radius: 14px;
+  padding: 12px 14px;
+  font-weight: 700;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 14px 30px rgba(17,24,39,0.10);
+}
+
+/* Improve primary + dark look without changing HTML */
+.glass-card .btn-primary{
+  background: linear-gradient(135deg, #7c3aed, #5b21b6);
+  border: none;
+}
+.glass-card .btn-dark{
+  background: linear-gradient(135deg, #111827, #4c1d95);
+  border: none;
+}
+.glass-card .btn-light{
+  background: rgba(255,255,255,0.8);
+  border: 1px solid rgba(124,58,237,0.20);
+  color:#4c1d95;
+}
+
+/* current plan badge centered + prettier */
+.glass-card .badge.bg-success{
+  display:inline-block;
+  margin-top: 6px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #10b981, #22c55e) !important;
+  box-shadow: 0 16px 34px rgba(16,185,129,0.18);
+}
+
+/* ====== PRO PLAN: MOST POPULAR RIBBON ====== */
+.glass-card.pro{
+  transform: translateY(-6px);
+  border: 1px solid rgba(124,58,237,0.35);
+  box-shadow: 0 26px 70px rgba(124,58,237,0.18);
+}
+
+.glass-card.pro::before{
+  opacity: 1; /* keep glow */
+}
+
+.glass-card.pro::marker{ content:""; }
+
+.glass-card.pro::after{
+  opacity: .85;
+}
+
+/* Ribbon using pseudo element (no HTML change) */
+.glass-card.pro > h5{
+  position: relative;
+}
+.glass-card.pro > h5::after{
+  content:"Most Popular";
+  position:absolute;
+  top:-30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: white;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #7c3aed, #ec4899);
+  box-shadow: 0 18px 40px rgba(236,72,153,0.20);
+}
+
+/* ====== MODAL POLISH ====== */
+.payment-modal{ border-radius: 20px; }
+.payment-plan{
+  background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(236,72,153,0.10));
+  border: 1px solid rgba(124,58,237,0.18);
+  border-radius: 14px;
+  padding: 16px;
+  text-align:center;
+}
+#planName{ font-weight:800; color:#4c1d95; }
+#planPrice{ font-size:28px; font-weight:900; color:#111827; }
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 991px){
+  .glass-card.pro{ transform:none; }
+}
+
 
 </style>
 

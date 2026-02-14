@@ -12,6 +12,7 @@
     </span>
   </h1>
 
+
   <div class="text-end small text-muted">
     {% if user.subscription_expiry %}
       <div>
@@ -26,6 +27,59 @@
       </div>
     {% endif %}
   </div>
+</div>
+
+
+<div class="row g-3 mb-4">
+
+  <!-- Applications -->
+  <div class="col-md-3">
+    <div class="card stat-card p-3 text-center">
+      <i class="bi bi-file-earmark-text fs-3 text-primary mb-2"></i>
+      <div class="fw-bold display-6 text-primary">
+        {{ user.applications.count }}
+      </div>
+      <small class="text-muted">Applications</small>
+    </div>
+  </div>
+
+  <!-- Saved Jobs -->
+  <div class="col-md-3">
+    <div class="card stat-card p-3 text-center">
+      <i class="bi bi-bookmark fs-3 text-primary mb-2"></i>
+      <div class="fw-bold display-6 text-primary">
+        {{ user.saved_jobs.count }}
+      </div>
+      <small class="text-muted">Saved Jobs</small>
+    </div>
+  </div>
+
+  <!-- Profile Completion -->
+  <div class="col-md-3">
+    <div class="card stat-card p-3 text-center">
+      <i class="bi bi-person-check fs-3 text-primary mb-2"></i>
+      <div class="fw-bold display-6 text-primary">
+        {% if user.candidateprofile %}
+          {{ user.candidateprofile.profile_completion }}
+        {% else %}
+          0
+        {% endif %}
+      </div>
+      <small class="text-muted">Profile %</small>
+    </div>
+  </div>
+
+  <!-- Remaining Applications -->
+  <div class="col-md-3">
+    <div class="card stat-card p-3 text-center">
+      <i class="bi bi-graph-up fs-3 text-primary mb-2"></i>
+      <div class="fw-bold display-6 text-primary">
+        {{ remaining }}
+      </div>
+      <small class="text-muted">Applications Left</small>
+    </div>
+  </div>
+
 </div>
 
 
@@ -533,6 +587,17 @@
     background:#ffffff;
   }
 
+.stat-card{
+  border-radius:14px;
+  background:linear-gradient(135deg,#ffffff,#faf5ff);
+  border:1px solid rgba(124,58,237,0.12);
+  transition:.2s;
+}
+
+.stat-card:hover{
+  transform:translateY(-3px);
+  box-shadow:0 10px 25px rgba(124,58,237,0.15);
+}
 
 
 
@@ -541,6 +606,7 @@
     .container.py-4 h1{ font-size: 1.4rem; }
     .container.py-4 .card-body{ padding: 16px; }
   }
+
 
 
 

@@ -7,7 +7,7 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
   <h1 class="text-primary fw-bold m-0">
     Welcome, {{ user.username }}!
-    <span class="badge bg-purple ms-2">
+    <span class="badge bg-light text-primary ms-2">
       {{ user.subscription_tier|upper }}
     </span>
   </h1>
@@ -88,7 +88,7 @@
       </p>
 
       {% if limit %}
-        <div class="progress mb-2">
+        <div class="progress mb-2" style="height:18px;">
           <div class="progress-bar bg-primary"
                style="width: {% widthratio month_count limit 100 %}%;">
             {{ month_count }}/{{ limit }}
@@ -227,7 +227,7 @@
       <h5 class="card-title">Monthly Application Usage</h5>
 
       {% if limit %}
-        <div class="progress mb-2">
+        <div class="progress mb-2" style="height:18px;">
           <div class="progress-bar bg-primary"
                style="width: {% widthratio month_count limit 100 %}%;">
 
@@ -294,6 +294,34 @@
             Track Requests
           </a>
         </div>
+
+        <div class="col-md-3">
+  <a href="{% url 'billing-history' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     Billing History
+  </a>
+</div>
+
+
+        {% if user.subscription_tier == "pro_plus" %}
+<div class="col-md-3">
+  <a href="{% url 'schedule-mock' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     Mock Interview
+  </a>
+</div>
+
+<div class="col-md-3">
+  <a href="{% url 'my-mock-interviews' %}"
+     class="btn btn-outline-primary w-100 btn-sm">
+     My Interviews
+  </a>
+</div>
+
+
+
+{% endif %}
+
 
       </div>
     </div>
@@ -513,6 +541,9 @@
     .container.py-4 h1{ font-size: 1.4rem; }
     .container.py-4 .card-body{ padding: 16px; }
   }
+
+
+
 </style>
 
 {% endblock %}
